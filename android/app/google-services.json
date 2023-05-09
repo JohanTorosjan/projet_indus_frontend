@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "558159704744",
+    "project_id": "sortircesoir-99c3d",
+    "storage_bucket": "sortircesoir-99c3d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:558159704744:android:ea6626047b67e4b627489d",
+        "android_client_info": {
+          "package_name": "com.example.projet_indus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "558159704744-5k1l5aq2slldeum9293s39gnl22nripi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHvU1nD8cy0tL-PYoLM6FF6mYBEJMjTbc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "558159704744-5k1l5aq2slldeum9293s39gnl22nripi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "558159704744-a0fh1s42as4quv49nu1n5h8jf6kpdufo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.projetIndus"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:558159704744:android:23a5eea294305a9627489d",
+        "android_client_info": {
+          "package_name": "polytech.pi.sortir_ce_soir"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "558159704744-5k1l5aq2slldeum9293s39gnl22nripi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHvU1nD8cy0tL-PYoLM6FF6mYBEJMjTbc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "558159704744-5k1l5aq2slldeum9293s39gnl22nripi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "558159704744-a0fh1s42as4quv49nu1n5h8jf6kpdufo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.projetIndus"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
