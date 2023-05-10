@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:projet_indus/views/Login.dart';
 
 class Handler extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class _Handler extends State<Handler> {
   @override
   Widget build(BuildContext context) {
     if (showSignin) {
-      return Text("ok");
+      return Login(toggleView: toggleView,);
     } else {
       return Text("carré");
     }

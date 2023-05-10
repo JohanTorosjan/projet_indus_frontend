@@ -64,9 +64,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         theme: ThemeData(
           brightness: Brightness.light,
-          primaryColor: Colors.black,
+          primaryColor: Colors.deepPurple,
           buttonTheme: ButtonThemeData(
-            buttonColor: Colors.black,
+            buttonColor:Colors.deepPurple,
             textTheme: ButtonTextTheme.primary,
             colorScheme:
             Theme.of(context).colorScheme.copyWith(secondary: Colors.white),
