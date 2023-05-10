@@ -1,15 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:projet_indus/view/AuthView.dart';
+import 'package:projet_indus/services/AuthService.dart';
+import 'package:projet_indus/views/AuthView.dart';
+import 'package:projet_indus/views/MainView.dart';
+import 'package:projet_indus/views/Wrapper.dart';
+
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
+import 'models/FirebaseUser.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -18,30 +24,58 @@ class MyApp extends StatelessWidget {
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Sortir Ce Soir',
+  // Widget build(BuildContext context) {
+  //   return MaterialApp(
+  //       title: 'Sortir Ce Soir',
+  //       theme: ThemeData(
+  //         // This is the theme of your application.
+  //         //
+  //         // Try running your application with "flutter run". You'll see the
+  //         // application has a blue toolbar. Then, without quitting the app, try
+  //         // changing the primarySwatch below to Colors.green and then invoke
+  //         // "hot reload" (press "r" in the console where you ran "flutter run",
+  //         // or simply save your changes to "hot reload" in a Flutter IDE).
+  //         // Notice that the counter didn't reset back to zero; the application
+  //         // is not restarted.
+  //         primarySwatch: Colors.deepPurple,
+  //       ),
+  //       home: StreamBuilder<User?>(
+  //           stream: FirebaseAuth.instance.authStateChanges(),
+  //           builder: (context, snapshot) {
+  //             final user = Provider.of<FirebaseUser?>(context);
+  //             print(user.toString());
+  //             if (snapshot.hasData) {
+  //               if (user != null) {
+  //                 return MainView(firebaseUser: user);
+  //               }
+  //               return AuthView();
+  //             } else {
+  //               return const AuthView();
+  //             }
+  //           }));
+  // }
+  
+  @override
+   Widget build(BuildContext context) {
+
+    return StreamProvider<FirebaseUser?>.value(
+      value: AuthService().user,
+      initialData: null,
+      child: MaterialApp(
         theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or simply save your changes to "hot reload" in a Flutter IDE).
-          // Notice that the counter didn't reset back to zero; the application
-          // is not restarted.
-          primarySwatch: Colors.deepPurple,
+          brightness: Brightness.light,
+          primaryColor: Colors.black,
+          buttonTheme: ButtonThemeData(
+            buttonColor: Colors.black,
+            textTheme: ButtonTextTheme.primary,
+            colorScheme:
+            Theme.of(context).colorScheme.copyWith(secondary: Colors.white),
+          ),
+          fontFamily: 'Inter',
         ),
-        home: StreamBuilder<User?>(
-            stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return MyHomePage(title: snapshot.data.toString());
-              } else {
-                return const AuthView();
-              }
-            }));
+        home: Wrapper(),
+      ),);
+
   }
 }
 
@@ -86,62 +120,62 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ElevatedButton(
-          onPressed: () {
-            FirebaseAuth.instance.signOut();
-          }
-          ,style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
-            ),
-          child: const Text('Sign Out'),
-        )
-        
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-      //    Column(
-      //     // Column is also a layout widget. It takes a list of children and
-      //     // arranges them vertically. By default, it sizes itself to fit its
-      //     // children horizontally, and tries to be as tall as its parent.
-      //     //
-      //     // Invoke "debug painting" (press "p" in the console, choose the
-      //     // "Toggle Debug Paint" action from the Flutter Inspector in Android
-      //     // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-      //     // to see the wireframe for each widget.
-      //     //
-      //     // Column has various properties to control how it sizes itself and
-      //     // how it positions its children. Here we use mainAxisAlignment to
-      //     // center the children vertically; the main axis here is the vertical
-      //     // axis because Columns are vertical (the cross axis would be
-      //     // horizontal).
-      //     mainAxisAlignment: MainAxisAlignment.center,
-          
-      //     children: <Widget>[
-      
-      //       const Text(
-      //         'You have pushed the button this many times:',
-      //       ),
-      //        Text(widget.title),
-             
-      //       Text(
-      //         '$_counter',
-      //         style: Theme.of(context).textTheme.headlineMedium,
-      //       ),
-      //     ],
-      //   ),
-        
-      // ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
-    ));
+        appBar: AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(widget.title),
+        ),
+        body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton(
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black,
+              ),
+              child: const Text('Sign Out'),
+            )
+
+            // Center is a layout widget. It takes a single child and positions it
+            // in the middle of the parent.
+            //    Column(
+            //     // Column is also a layout widget. It takes a list of children and
+            //     // arranges them vertically. By default, it sizes itself to fit its
+            //     // children horizontally, and tries to be as tall as its parent.
+            //     //
+            //     // Invoke "debug painting" (press "p" in the console, choose the
+            //     // "Toggle Debug Paint" action from the Flutter Inspector in Android
+            //     // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+            //     // to see the wireframe for each widget.
+            //     //
+            //     // Column has various properties to control how it sizes itself and
+            //     // how it positions its children. Here we use mainAxisAlignment to
+            //     // center the children vertically; the main axis here is the vertical
+            //     // axis because Columns are vertical (the cross axis would be
+            //     // horizontal).
+            //     mainAxisAlignment: MainAxisAlignment.center,
+
+            //     children: <Widget>[
+
+            //       const Text(
+            //         'You have pushed the button this many times:',
+            //       ),
+            //        Text(widget.title),
+
+            //       Text(
+            //         '$_counter',
+            //         style: Theme.of(context).textTheme.headlineMedium,
+            //       ),
+            //     ],
+            //   ),
+
+            // ),
+            // floatingActionButton: FloatingActionButton(
+            //   onPressed: _incrementCounter,
+            //   tooltip: 'Increment',
+            //   child: const Icon(Icons.add),
+            // ), // This trailing comma makes auto-formatting nicer for build methods.
+            ));
   }
 }

@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:projet_indus/services/AuthService.dart';
 
 class AuthView extends StatefulWidget {
-  const AuthView({super.key});
 
+  const AuthView({super.key});
   @override
   State<AuthView> createState() => _AuthViewState();
 }
 
 class _AuthViewState extends State<AuthView> {
+  
   final bool _isLogin = false;
   bool _loading = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -16,6 +17,7 @@ class _AuthViewState extends State<AuthView> {
   final TextEditingController _passwordController = TextEditingController();
 
   handleSubmit() async {
+
     if (!_formKey.currentState!.validate()) return null;
     final email = _emailController.value.text;
     final password = _passwordController.value.text;
