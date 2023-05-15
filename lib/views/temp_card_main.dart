@@ -52,16 +52,16 @@ class _MyHomePageState extends State<MyHomePage> {
             context: context,
             //add the first 3 cards
             items: const [
-              // CardView(text: "question 1", choice0: "Choix 0", choice1: "Choix 1", progress: 0),
-              // CardView(text: "question 2", choice0: "Choix 0", choice1: "Choix 1", progress: 0.5),
-              // CardView(text: "question 3", choice0: "Choix 0", choice1: "Choix 1", progress: 1)
+              CardView(id: 0, text: "question 1", choice0: "Choix 0", choice1: "Choix 1", progress: 0),
+              CardView(id: 1, text: "question 2", choice0: "Choix 0", choice1: "Choix 1", progress: 0.5),
+              CardView(id: 2, text: "question 3", choice0: "Choix 0", choice1: "Choix 1", progress: 1)
             ],
             onCardSwiped: (dir, index, widget) {
               //Add the next card
-              // if (counter <= 20) {
-              //   cardController.addItem(CardView(text: "Card $counter", choice0: "Choix 0", choice1: "Choix 1", progress: (Random().nextDouble() * 1.0)));
-              //   counter++;
-              // }
+              if (counter <= 20) {
+                cardController.addItem(CardView(id: counter, text: "Card $counter", choice0: "Choix 0", choice1: "Choix 1", progress: (Random().nextDouble() * 1.0)));
+                counter++;
+              }
 
               if (dir == Direction.left) {
                 print('onDisliked ${(widget as CardView).text} $index');
