@@ -20,8 +20,6 @@ class FirstQuestions extends StatefulWidget {
 }
 
 class _FirstQuestionsState extends State<FirstQuestions> {
-  
-
   final QuestionService questionService = QuestionService();
   Timer? _timer;
   late Future<List<Question>> questions;
@@ -35,6 +33,16 @@ class _FirstQuestionsState extends State<FirstQuestions> {
     questions.then((value) {
       questionList = value;
     });
+  }
+
+  CardView _createCard(Question question, int index) {
+    return CardView(
+      id: question.id,
+      text: question.label,
+      choice0: question.choice0,
+      choice1: question.choice1,
+      progress: (index + 1) / 10.0,
+    );
   }
 
   @override
@@ -63,16 +71,12 @@ class _FirstQuestionsState extends State<FirstQuestions> {
                     context: context,
                     items: questionList
                         .getRange(0, min(3, questionList.length))
-                        .map((question) {
-                      // Updated
-                      return CardView(
-                        id: question.id,
-                        text: question.label,
-                        choice0: question.choice0,
-                        choice1: question.choice1,
-                        progress: currentIndex / 10.0,
-                      );
-                    }).toList(),
+                        .toList() // Convert Iterable to List
+                        .asMap() // Convert to a map to get index and value
+                        .map((index, question) =>
+                            MapEntry(index, _createCard(question, index)))
+                        .values
+                        .toList(),
                     onCardSwiped: (dir, index, widget) {
                       if (currentIndex <= 10) {
                         currentIndex++;
@@ -90,17 +94,9 @@ class _FirstQuestionsState extends State<FirstQuestions> {
                       }
 
                       // Add the next card
-                      if (currentIndex < questionList.length - 1) {
-                        currentIndex++;
-                        cardController.addItem(
-                          CardView(
-                            id: questionList[currentIndex].id,
-                            text: questionList[currentIndex].label,
-                            choice0: questionList[currentIndex].choice0,
-                            choice1: questionList[currentIndex].choice1,
-                            progress: currentIndex / 10.0,
-                          ),
-                        );
+                      if (currentIndex < questionList.length) {
+                        cardController.addItem(_createCard(
+                            questionList[currentIndex], currentIndex));
                       }
                     },
                     enableSwipeUp: false,
