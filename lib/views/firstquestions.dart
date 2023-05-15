@@ -51,6 +51,7 @@ class _FirstQuestionsState extends State<FirstQuestions> {
         SwipeableCardSectionController();
     int? idUtilisateur = widget.client.id;
     return Scaffold(
+         backgroundColor: Colors.purple.shade100,
         appBar: AppBar(
           title: const Text('Questions d\'usage'),
         ),
