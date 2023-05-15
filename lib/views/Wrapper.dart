@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projet_indus/models/client.dart';
 import 'package:projet_indus/views/Handler.dart';
-import 'package:projet_indus/views/MainView.dart';
 import 'package:projet_indus/views/firstquestions.dart';
 import 'package:projet_indus/views/home_page_view.dart';
 import 'package:provider/provider.dart';

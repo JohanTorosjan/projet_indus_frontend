@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:projet_indus/services/AuthService.dart';
 import 'package:projet_indus/views/AuthView.dart';
-import 'package:projet_indus/views/MainView.dart';
 import 'package:projet_indus/views/Wrapper.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';

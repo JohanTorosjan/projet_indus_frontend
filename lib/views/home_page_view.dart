@@ -1,8 +1,9 @@
 import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:projet_indus/services/AuthService.dart';
 
 import '../models/client.dart';
-
 
 class MainView extends StatefulWidget {
   const MainView({super.key, required this.client});
@@ -11,8 +12,18 @@ class MainView extends StatefulWidget {
   @override
   State<MainView> createState() => _MainViewState();
 }
+
 class _MainViewState extends State<MainView> {
- 
+  bool active_session = true;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(widget.client.has_active_session!);
+    setState(() {
+      active_session = widget.client.has_active_session!;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,27 +79,20 @@ class _MainViewState extends State<MainView> {
           // Bubbles around the main button
           ...List.generate(
             10,
-                (index) =>
-                Positioned(
-                  left: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.5 +
-                      80 * cos(2 * pi * index / 10), // Add extra space
-                  top: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.5 +
-                      80 * sin(2 * pi * index / 10), // Add extra space
-                  child: Container(
-                    width: 24,
-                    height: 24,
-                    decoration: BoxDecoration(
-                      color: Colors.blue.shade300,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
+            (index) => Positioned(
+              left: MediaQuery.of(context).size.width * 0.5 +
+                  80 * cos(2 * pi * index / 10), // Add extra space
+              top: MediaQuery.of(context).size.height * 0.5 +
+                  80 * sin(2 * pi * index / 10), // Add extra space
+              child: Container(
+                width: 24,
+                height: 24,
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade300,
+                  borderRadius: BorderRadius.circular(12),
                 ),
+              ),
+            ),
           ),
           Center(
             child: ElevatedButton(
@@ -114,23 +118,19 @@ class _MainViewState extends State<MainView> {
                 shape: const CircleBorder(),
                 elevation: 4,
               ),
-              child: const Text(
-                'My night out',
-                style: TextStyle(fontSize: 24, color: Colors.white),
-              ),
+              child: active_session
+                  ? const Text(
+                      'Ma sortie de ce soir',
+                      style: TextStyle(fontSize: 24, color: Colors.white),
+                    )
+                  : const Text("Sortir ce soir"),
             ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              width: MediaQuery
-                  .of(context)
-                  .size
-                  .width,
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.1,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.1,
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(30),
@@ -155,7 +155,8 @@ class _MainViewState extends State<MainView> {
                           content: const Text('Plus de questions à mettre ici'),
                           actions: [
                             TextButton(
-                              onPressed: () => Navigator.of(context).pop(),
+                              onPressed: () => FirebaseAuth.instance
+                                  .signOut(), // Navigator.of(context).pop(),
                               child: const Text('Close'),
                             ),
                           ],
