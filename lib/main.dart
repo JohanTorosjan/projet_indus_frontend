@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -5,14 +8,23 @@ import 'package:projet_indus/services/AuthService.dart';
 import 'package:projet_indus/views/AuthView.dart';
 import 'package:projet_indus/views/MainView.dart';
 import 'package:projet_indus/views/Wrapper.dart';
-
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
-import 'models/FirebaseUser.dart';
+import 'models/client.dart';
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    final client = super.createHttpClient(context);
+    client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+    return client;
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  
+  HttpOverrides.global = MyHttpOverrides();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -58,8 +70,12 @@ class MyApp extends StatelessWidget {
   @override
    Widget build(BuildContext context) {
 
-    return StreamProvider<FirebaseUser?>.value(
-      value: AuthService().user,
+    return StreamProvider<Client?>.value(
+       value: AuthService().user.transform(StreamTransformer.fromHandlers(
+    handleData: (futureClient, sink) async {
+      sink.add(await futureClient);
+    },
+  )),
       initialData: null,
       child: MaterialApp(
         theme: ThemeData(
@@ -75,6 +91,7 @@ class MyApp extends StatelessWidget {
         ),
         home: Wrapper(),
       ),);
+
 
   }
 }
@@ -179,3 +196,4 @@ class _MyHomePageState extends State<MyHomePage> {
             ));
   }
 }
+

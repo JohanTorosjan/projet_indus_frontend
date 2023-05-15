@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projet_indus/views/Login.dart';
+import 'package:projet_indus/views/register.dart';
 
 class Handler extends StatefulWidget {
   @override
@@ -22,7 +23,7 @@ class _Handler extends State<Handler> {
     if (showSignin) {
       return Login(toggleView: toggleView,);
     } else {
-      return Text("carré");
+      return Register(toggleView: toggleView,);
     }
   }
 }

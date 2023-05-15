@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projet_indus/models/client.dart';
 
-import '../models/FirebaseUser.dart';
+
 import '../services/AuthService.dart';
 
 class Login extends StatefulWidget {
@@ -21,19 +22,17 @@ class _LoginState extends State<Login> {
 
   changeError() {
     _error = false;
-    print(_error);
   }
 
   handleSubmit() async {
     if (!_formKey.currentState!.validate()) return null;
     setState(() => _loading = true);
-    final email = _emailController.value.text;
-    final password = _passwordController.value.text;
-    FirebaseUser firebaseUser =
-        await AuthService().loginWithEmailAndPassword(email, password);
-    if (firebaseUser.uid == null) {
+      final email = _emailController.value.text;
+      final password = _passwordController.value.text;
+      Client user =
+          await AuthService().loginWithEmailAndPassword(email, password);
+      if (user.firebase_id == null) {
       _error = true;
-      print(_error);
       setState(() => _error = true);
     }
     setState(() => _loading = false);

@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:projet_indus/models/FirebaseUser.dart';
+
+import 'package:projet_indus/models/client.dart';
 
 class MainView extends StatefulWidget {
-  const MainView({super.key, required this.firebaseUser});
+  const MainView({super.key, required this.client});
 
-  final FirebaseUser firebaseUser;
+  final Client client;
   @override
   State<MainView> createState() => _MainViewState();
 }
@@ -26,7 +27,7 @@ class _MainViewState extends State<MainView> {
               ),
               child: const Text('Sign Out'),
             ),
-          Text(widget.firebaseUser.uid!),
+          Text(widget.client.name!),
             ],)
        
     )
