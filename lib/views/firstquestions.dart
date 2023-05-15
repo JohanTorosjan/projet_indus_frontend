@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:projet_indus/DTOs/ratingdto.dart';
@@ -23,13 +24,17 @@ class _FirstQuestionsState extends State<FirstQuestions> {
 
   final QuestionService questionService = QuestionService();
   Timer? _timer;
-  int counter = 0;
   late Future<List<Question>> questions;
+  late List<Question> questionList; // New variable to hold all questions
+  int currentIndex = 0; // New variable to keep track of current index
 
   @override
   void initState() {
     super.initState();
     questions = QuestionService().getStarters();
+    questions.then((value) {
+      questionList = value;
+    });
   }
 
   @override
@@ -56,21 +61,24 @@ class _FirstQuestionsState extends State<FirstQuestions> {
                   SwipeableCardsSection(
                     cardController: cardController,
                     context: context,
-                    items: snapshot.data!.map((question) {
+                    items: questionList
+                        .getRange(0, min(3, questionList.length))
+                        .map((question) {
+                      // Updated
                       return CardView(
                         id: question.id,
                         text: question.label,
                         choice0: question.choice0,
                         choice1: question.choice1,
-                        progress: counter / 10.0,
+                        progress: currentIndex / 10.0,
                       );
                     }).toList(),
                     onCardSwiped: (dir, index, widget) {
-                      if (counter <= 10) {
-                        counter++;
+                      if (currentIndex <= 10) {
+                        currentIndex++;
                       }
                       int questionId = (widget as CardView).id;
-                      String questionLabel = (widget as CardView).text;
+                      String questionLabel = (widget).text;
                       if (dir == Direction.left) {
                         RatingDTO ratingDTO =
                             RatingDTO(label: questionLabel, choice: false);
@@ -79,6 +87,20 @@ class _FirstQuestionsState extends State<FirstQuestions> {
                         RatingDTO ratingDTO =
                             RatingDTO(label: questionLabel, choice: true);
                         questionService.rating(questionId, ratingDTO);
+                      }
+
+                      // Add the next card
+                      if (currentIndex < questionList.length - 1) {
+                        currentIndex++;
+                        cardController.addItem(
+                          CardView(
+                            id: questionList[currentIndex].id,
+                            text: questionList[currentIndex].label,
+                            choice0: questionList[currentIndex].choice0,
+                            choice1: questionList[currentIndex].choice1,
+                            progress: currentIndex / 10.0,
+                          ),
+                        );
                       }
                     },
                     enableSwipeUp: false,
