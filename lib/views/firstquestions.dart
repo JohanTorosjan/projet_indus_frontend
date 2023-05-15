@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:projet_indus/models/client.dart';
+import 'package:projet_indus/views/card_view.dart';
 
 class FirstQuestions extends StatefulWidget {
   const FirstQuestions({super.key, required this.client});
@@ -19,6 +20,10 @@ class _FirstQuestionsState extends State<FirstQuestions> {
         body: SafeArea(
             child: Column(
       children: [
+        
+        
+        
+        /*
         ElevatedButton(
           onPressed: () {
             FirebaseAuth.instance.signOut();
@@ -29,7 +34,10 @@ class _FirstQuestionsState extends State<FirstQuestions> {
           child: const Text('Sign Out MAIS LE NOUVO'),
         ),
         Text(widget.client.name!),
+      */
+
       ],
+      
     )));
   }
 }

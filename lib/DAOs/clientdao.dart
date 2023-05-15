@@ -5,7 +5,7 @@ import 'package:projet_indus/models/client.dart';
 import 'package:http/http.dart' as http;
 
 class ClientDAO {
-  //TODO
+
   Future<Client> getByFirebaseId({required String firebaseId}) async {
     final String apiUrl = 'https://localhost:8443/user/firebase_id/$firebaseId';
     print(apiUrl);
