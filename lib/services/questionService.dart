@@ -6,6 +6,7 @@ class QuestionService {
   Future<List<Question>> getStarters() async {
     List<Question>? questionList = [];
     questionList = await QuestionDAO().getStarters();
+    print(questionList);
     if (questionList != null) {
       return questionList;
     } else {

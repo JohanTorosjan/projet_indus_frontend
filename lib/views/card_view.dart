@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CardView extends StatelessWidget {
+  final int id;
   final String text;
   final String choice0;
   final String choice1;
@@ -8,6 +9,7 @@ class CardView extends StatelessWidget {
 
   const CardView({
     Key? key,
+    required this.id,
     required this.text,
     required this.choice0,
     required this.choice1,
@@ -62,7 +64,8 @@ class CardView extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 32.0, bottom: 32.0),
                       child: Text(
                         choice0,
-                        style: const TextStyle(fontSize: 18, color: Colors.white),
+                        style:
+                            const TextStyle(fontSize: 18, color: Colors.white),
                       ),
                     ),
                   ),
@@ -72,7 +75,8 @@ class CardView extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 32.0, top: 32.0),
                       child: Text(
                         choice1,
-                        style: const TextStyle(fontSize: 18, color: Colors.white),
+                        style:
+                            const TextStyle(fontSize: 18, color: Colors.white),
                       ),
                     ),
                   ),
@@ -100,7 +104,8 @@ class DiagonalDividerPainter extends CustomPainter {
       ..color = Colors.white.withOpacity(0.6)
       ..strokeWidth = 1.0;
 
-    canvas.drawLine(const Offset(10, 10), Offset(size.width-10, size.height-10), paint);
+    canvas.drawLine(
+        const Offset(10, 10), Offset(size.width - 10, size.height - 10), paint);
   }
 
   @override

@@ -9,17 +9,19 @@ class QuestionDAO {
     print(apiUrl);
     try {
       final response = await http.get(Uri.parse(apiUrl));
-      final jsonData = json.decode(response.body);
+   
+      final jsonString = response.body;
+      final jsonData = json.decode(utf8.decode(jsonString.runes.toList()));
       if (response.statusCode == 200) {
-      List<Question> questionList = [];
-      for (var questionData in jsonData) {
-        Question question = Question.fromJson(questionData);
-        questionList.add(question);
+        List<Question> questionList = [];
+        for (var questionData in jsonData) {
+          Question question = Question.fromJson(questionData);
+          questionList.add(question);
+        }
+        return questionList;
+      } else {
+        return null;
       }
-      return questionList;
-    } else {
-      return null;
-    }
     } catch (err) {
       print(err);
       return null;
