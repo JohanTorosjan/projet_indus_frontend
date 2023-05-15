@@ -5,4 +5,6 @@ class QuestionService {
   Future<List<Question>?> getStarters() async {
     return await QuestionDAO().getStarters();
   }
+
+  void rating(int idUtilisateur,)
 }
