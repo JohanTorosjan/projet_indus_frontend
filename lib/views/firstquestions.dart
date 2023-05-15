@@ -23,8 +23,9 @@ class _FirstQuestionsState extends State<FirstQuestions> {
   final QuestionService questionService = QuestionService();
   Timer? _timer;
   late Future<List<Question>> questions;
-  late List<Question> questionList; // New variable to hold all questions
-  int currentIndex = 0; // New variable to keep track of current index
+  late List<Question> questionList;
+  int currentIndex = 0;
+  int nextCardIndex = 3;
 
   @override
   void initState() {
@@ -41,7 +42,7 @@ class _FirstQuestionsState extends State<FirstQuestions> {
       text: question.label,
       choice0: question.choice0,
       choice1: question.choice1,
-      progress: (index + 1) / 10.0,
+      progress: index / 10.0,
     );
   }
 
@@ -79,11 +80,7 @@ class _FirstQuestionsState extends State<FirstQuestions> {
                         .values
                         .toList(),
                     onCardSwiped: (dir, index, widget) {
-                      if (currentIndex <= 10) {
-                        currentIndex++;
-                      }
                       int questionId = (widget as CardView).id;
-                      String questionLabel = (widget).text;
                       if (dir == Direction.left) {
                         RatingDTO ratingDTO =
                             RatingDTO(id: questionId, choice: false);
@@ -94,10 +91,16 @@ class _FirstQuestionsState extends State<FirstQuestions> {
                         questionService.rating(idUtilisateur!, ratingDTO);
                       }
 
+                      // Increment currentIndex after the card swipe action is complete
+                      if (currentIndex < 10) {
+                        currentIndex++;
+                      }
+
                       // Add the next card
-                      if (currentIndex < questionList.length) {
+                      if (nextCardIndex < questionList.length) {
                         cardController.addItem(_createCard(
-                            questionList[currentIndex], currentIndex));
+                            questionList[nextCardIndex], currentIndex));
+                        nextCardIndex++; // Increment nextCardIndex
                       }
                     },
                     enableSwipeUp: false,
