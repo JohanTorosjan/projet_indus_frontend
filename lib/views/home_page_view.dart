@@ -1,8 +1,18 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+import '../models/client.dart';
+
+
+class MainView extends StatefulWidget {
+  const MainView({super.key, required this.client});
+
+  final Client client;
+  @override
+  State<MainView> createState() => _MainViewState();
+}
+class _MainViewState extends State<MainView> {
+ 
 
   @override
   Widget build(BuildContext context) {

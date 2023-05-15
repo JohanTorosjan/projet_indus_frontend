@@ -5,6 +5,7 @@ import 'package:projet_indus/models/client.dart';
 import 'package:projet_indus/views/Handler.dart';
 import 'package:projet_indus/views/MainView.dart';
 import 'package:projet_indus/views/firstquestions.dart';
+import 'package:projet_indus/views/home_page_view.dart';
 import 'package:provider/provider.dart';
 
 class Wrapper extends StatelessWidget {
@@ -24,16 +25,22 @@ class Wrapper extends StatelessWidget {
       print("ok ici");
       return Handler();
     }
-    if (user.answered_questions == 0) {
-      print("HAS ANSWERED FAUX");
-      print(user);
-      return FirstQuestions(client: user);
-    } else if (user.answered_questions == null) {
-      print("ok la");
-      return Handler();
+
+    else{
+      if(user.answered_questions == null){
+        print("ok la");
+        return Handler(); 
+      }
+       else if (user.answered_questions! >= 10){
+        return MainView(client: user);
+
+      }
+
+      else{
+        return FirstQuestions(client: user);
+      }
     }
-    print("HAS ANSWERED VRAI");
-    return MainView(client: user);
+    
   }
   // if (user == null) {
   //   return Handler();
