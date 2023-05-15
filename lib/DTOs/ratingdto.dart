@@ -1,6 +1,12 @@
 class RatingDTO {
-  final String label;
+  final int id;
   final bool choice;
 
-  RatingDTO({required this.label, required this.choice});
+  RatingDTO({required this.id, required this.choice});
+  Map<String, dynamic> toJson() {
+    return {
+      'idQuestion': id,
+      'choice': choice,
+    };
+  }
 }

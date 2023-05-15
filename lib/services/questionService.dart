@@ -16,6 +16,6 @@ class QuestionService {
   }
 
   void rating(int idUtilisateur, RatingDTO ratingDTO) {
-    print(ratingDTO.label);
+    QuestionDAO().rate(idUtilisateur, ratingDTO);
   }
 }

@@ -19,10 +19,10 @@ class FirstQuestions extends StatefulWidget {
 }
 
 class _FirstQuestionsState extends State<FirstQuestions> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  
 
   final QuestionService questionService = QuestionService();
-  Timer? _timer;
+
   int counter = 0;
   late Future<List<Question>> questions;
 
@@ -30,13 +30,14 @@ class _FirstQuestionsState extends State<FirstQuestions> {
   void initState() {
     super.initState();
     questions = QuestionService().getStarters();
+    
   }
 
   @override
   Widget build(BuildContext context) {
     SwipeableCardSectionController cardController =
         SwipeableCardSectionController();
-
+    int? idUtilisateur = widget.client.id;
     return Scaffold(
         appBar: AppBar(
           title: const Text('Questions d\'usage'),
@@ -70,15 +71,15 @@ class _FirstQuestionsState extends State<FirstQuestions> {
                         counter++;
                       }
                       int questionId = (widget as CardView).id;
-                      String questionLabel = (widget as CardView).text;
+                     // String questionLabel = (widget as CardView).text;
                       if (dir == Direction.left) {
                         RatingDTO ratingDTO =
-                            RatingDTO(label: questionLabel, choice: false);
-                        questionService.rating(questionId, ratingDTO);
+                            RatingDTO(id: questionId, choice: false);
+                        questionService.rating(idUtilisateur!, ratingDTO);
                       } else if (dir == Direction.right) {
                         RatingDTO ratingDTO =
-                            RatingDTO(label: questionLabel, choice: true);
-                        questionService.rating(questionId, ratingDTO);
+                            RatingDTO(id: questionId, choice: true);
+                        questionService.rating(idUtilisateur!, ratingDTO);
                       }
                     },
                     enableSwipeUp: false,
