@@ -31,7 +31,7 @@ class Wrapper extends StatelessWidget {
         return Handler(); 
       }
        else if (user.answered_questions! >= 10){
-        return MainView(client: user);
+        return MainView(client: user,);
 
       }
 
