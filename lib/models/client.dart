@@ -10,7 +10,8 @@ class Client {
   final String? instagram;
   final DateTime? dob;
   final bool? has_active_session;
- final int? answered_questions;
+  final int? answered_questions;
+
   Client(
       {this.id,
       this.firebase_id,
@@ -24,7 +25,7 @@ class Client {
   factory Client.fromJson(Map<String, dynamic> json) => Client(
         id: json["id"],
         firebase_id: json["firebase_id"],
-        dob:DateTime.parse(json["dob"]),
+        dob: DateTime.parse(json["dob"]),
         email: json["email"],
         has_active_session: json["has_active_session"],
         instagram: json["instagram"],
@@ -32,13 +33,13 @@ class Client {
         answered_questions: json["answered_questions"],
       );
 
-      Map<String, dynamic> toJson() => {
-    "firebase_id": firebase_id,
-    "dob": dob.toString(),
-    "email": email,
-    "has_active_session": has_active_session,
-    "instagram": instagram,
-    "name": name,
-    "answered_questions": answered_questions,
-};
+  Map<String, dynamic> toJson() => {
+        "firebase_id": firebase_id,
+        "dob": dob.toString(),
+        "email": email,
+        "has_active_session": has_active_session,
+        "instagram": instagram,
+        "name": name,
+        "answered_questions": answered_questions,
+      };
 }
