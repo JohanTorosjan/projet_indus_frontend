@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:projet_indus/models/client.dart';
 import 'package:http/http.dart' as http;
@@ -48,6 +47,30 @@ class ClientDAO {
         final jsonData = json.decode(response.body);
         print(Client.fromJson(jsonData as Map<String,dynamic>).answered_questions);
         return Client.fromJson(jsonData as Map<String,dynamic>);
+      } else {
+        return Client();
+      }
+    } catch (err) {
+      print(err);
+      return Client();
+    }
+  }
+
+  Future<Client> updateClient(Client updatedClient) async {
+    final headers = <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    };
+
+    // Replace this URL with the correct endpoint for updating a client.
+    final String apiUrl = 'https://localhost:8443/user/${updatedClient.id}';
+
+    try {
+      final jsonBody = json.encode(updatedClient.toJson());
+      final response = await http.put(Uri.parse(apiUrl), headers: headers, body: jsonBody);
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        return Client.fromJson(jsonData as Map<String, dynamic>);
       } else {
         return Client();
       }

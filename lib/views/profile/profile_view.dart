@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:projet_indus/DAOs/clientdao.dart';
+import 'package:projet_indus/views/Handler.dart';
 
 import '../../models/client.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfileView extends StatefulWidget {
   final Client client;
@@ -123,10 +125,8 @@ class ProfileViewState extends State<ProfileView> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.purple.shade900,
                           ),
+                          onPressed: _saveProfile,
                           child: const Text('Mettre à jour'),
-                          onPressed: () {
-                            // TODO: Implement update profile functionality
-                          },
                         ),
                       ),
                     ),
@@ -134,14 +134,20 @@ class ProfileViewState extends State<ProfileView> {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10.0),
                         child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.purple.shade900,
-                          ),
-                          child: const Text('Se déconnecter'),
-                          onPressed: () {
-                            // TODO: Implement logout functionality
-                          },
-                        ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.purple.shade900,
+                            ),
+                            child: const Text('Se déconnecter'),
+                            onPressed: () async {
+                              await FirebaseAuth.instance.signOut();
+                              if (mounted) {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => Handler()),
+                                  (Route<dynamic> route) => false,
+                                );
+                              }
+                            }),
                       ),
                     ),
                   ],
@@ -207,8 +213,8 @@ class ProfileViewState extends State<ProfileView> {
     );
   }
 
-  void _saveProfile() {
-    /*if (_formKey.currentState!.validate()) {
+  void _saveProfile() async {
+    if (_formKey.currentState!.validate()) {
       // Create a new Client instance with updated data
       Client updatedClient = Client(
         id: widget.client.id,
@@ -221,17 +227,24 @@ class ProfileViewState extends State<ProfileView> {
         answered_questions: widget.client.answered_questions,
       );
 
-      // Update the Firebase document
-      FirebaseFirestore.instance
-          .collection('clients')
-          .doc(widget.client.firebase_id)
-          .set(updatedClient.toJson())
-          .then((_) {
-        Navigator.of(context).pop();
-      }).catchError((error) {
+      ClientDAO clientDao = ClientDAO();
+      try {
+        Client result = await clientDao.updateClient(updatedClient);
+        if (result.id != null) {
+          // check if the update was successful
+          // Check if the widget is still in the tree
+          if (mounted) {
+            // Navigate away or show a success message
+            Navigator.of(context).pop();
+          }
+        } else {
+          // Show an error message
+          print("Failed to update client");
+        }
+      } catch (err) {
         // Handle any errors here.
-        print("Failed to update client: $error");
-      });
-    }*/
+        print("Failed to update client: $err");
+      }
+    }
   }
 }
