@@ -17,10 +17,6 @@ class ProfileView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const CircleAvatar(
-              radius: 50.0,
-              backgroundImage: AssetImage('assets/profile_logo.png'),
-            ),
             const SizedBox(height: 20.0),
             Text('Name: ${client.name}'),
             Text('Email: ${client.email}'),

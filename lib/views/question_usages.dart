@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:projet_indus/models/friends.dart';
+import 'package:projet_indus/services/friendsService.dart';
+import 'package:projet_indus/views/questions_usages_answer.dart';
 import '../models/client.dart';
 
 class QuestionUsages extends StatefulWidget {
@@ -13,14 +17,53 @@ class QuestionUsages extends StatefulWidget {
 }
 
 class _QuestionUsagesState extends State<QuestionUsages> {
+  final FriendsService friendsService = FriendsService();
+  List<Friends> friends = [];
+  List<Friends> selectedFriends = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchFriends();
+  }
+
+  void fetchFriends() async {
+    List<Friends> friendsData =
+        await friendsService.getFriends(widget.client.id!);
+    setState(() {
+      friends = friendsData;
+    });
+  }
+
+  void handleNextPage() {
+    selectedFriends = friends.where((friend) => friend.selected).toList();
+    Navigator.push(
+               context,
+               MaterialPageRoute(builder: (context) => QuestionUsagesAnswer(client: widget.client,close: widget.close,friends: selectedFriends,)),
+             );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final currentDate = DateTime.now();
+
+    final formattedDate = DateFormat('dd/MM/yyyy').format(currentDate);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        title: Text(
+          'Avec des ami.es ? ',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 30,
+            color: Color.fromARGB(255, 255, 255, 255),
+            fontFamily: 'Inter',
+          ),
+        ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.close),
           onPressed: () {
             widget.close();
           },
@@ -44,25 +87,59 @@ class _QuestionUsagesState extends State<QuestionUsages> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'Question Usages',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Client: ${widget.client.name}',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                  ),
+                const Spacer(), // Ajoute un espace flexible au-dessus du texte
+                // Text(
+                //   'Avec des ami.es ? ',
+                //   style: TextStyle(
+                //     fontSize: 24,
+                //     fontWeight: FontWeight.bold,
+                //     color: Colors.white,
+                //   ),
+                // ),
+                // SizedBox(height: 20),
+                Expanded(
+                  child:friends.length>0?
+                  ListView.builder(
+                    itemCount: friends.length,
+                    itemBuilder: (context, index) {
+                      return CheckboxListTile(
+                        
+                          title: Text(friends[index].name,style: TextStyle(
+                            
+                            fontSize: 20,
+                            
+                              color: Colors.white,
+                        ),),
+                          value: friends[index].selected,
+                          activeColor: friends[index].selected?  Colors.purple.shade400:null,
+                           secondary: Icon(
+                                Icons.person,
+                                color: Colors.green,
+                              ),
+                          onChanged: (bool? value) {
+                            setState(() {
+                              friends[index].selected = value ?? false;
+                            });
+                          });
+                      // return ListTile(
+                      //   leading: Icon(Icons.person),
+                      //   title: Text(friends[index].name),
+                      // );
+                    },)
+                    :Center(child: const Text(
+                          "Tu n'as pas encore d'ami.es ... Sors pour en trouver ! ",
+                          textAlign: TextAlign.center,
+                        style: TextStyle(
+                        
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                    ),
+                  )),
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
-                  child: Text('Retour'),
+                  child: Text('Répondre à quelques questions ->'),
                   style: ElevatedButton.styleFrom(
                     primary: Colors.white,
                     onPrimary: Colors.blue,
@@ -72,9 +149,10 @@ class _QuestionUsagesState extends State<QuestionUsages> {
                     ),
                   ),
                   onPressed: () {
-                    widget.close();
+                    handleNextPage();
                   },
                 ),
+                Spacer(),
               ],
             ),
           ),

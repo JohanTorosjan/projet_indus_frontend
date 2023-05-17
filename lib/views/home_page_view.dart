@@ -5,7 +5,9 @@ import 'package:projet_indus/services/AuthService.dart';
 import 'package:projet_indus/views/bunch_of_quesions.dart';
 import 'package:projet_indus/views/card_view.dart';
 import 'package:projet_indus/views/firstquestions.dart';
+import 'package:projet_indus/views/profile/profile_view.dart';
 import 'package:projet_indus/views/question_usages.dart';
+import 'package:swipeable_card_stack/swipeable_card_stack.dart';
 
 import '../models/client.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +27,7 @@ class _MainViewState extends State<MainView>
   bool afficherNouvelleVue = false;
 
   bool active_session = true;
+  double draggableSheetHeight = 0.1;
 
   @override
   void initState() {
@@ -40,9 +43,14 @@ class _MainViewState extends State<MainView>
     });
   }
 
+  void closeSwipeSection() {
+    setState(() {
+      draggableSheetHeight = 0.1;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    double draggableSheetHeight = 0.1;
     final shadow = Shadow(
       color: Colors.black.withOpacity(0.4),
       offset: Offset(0, 2),
@@ -68,9 +76,7 @@ class _MainViewState extends State<MainView>
                   IconButton(
                     iconSize: 32, // Increase the size of the button
                     icon: const Icon(Icons.group),
-                    onPressed: () {
-                      // Navigate to friends page or show friend list and search field
-                    },
+                    onPressed: () {},
                   ),
                 ],
               ),
@@ -86,18 +92,21 @@ class _MainViewState extends State<MainView>
                       ),
                     ),
                     IconButton(
-                      iconSize: 32, // Increase the size of the button
-                      icon: const Icon(Icons.account_circle),
-                      onPressed: () {
-                        // Navigate to the profile page
-                      },
-                    ),
+                        iconSize: 32, // Increase the size of the button
+                        icon: const Icon(Icons.account_circle),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ProfileView(client: widget.client);
+                              });
+                        }),
                   ],
                 ),
               ],
             )
           : null,
-      extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: false,
       body: Stack(
         children: [
           // Bubbles around the main button
@@ -238,31 +247,6 @@ class _MainViewState extends State<MainView>
             // ),
           ),
 
-          DraggableScrollableSheet(
-            initialChildSize: 0.1,
-            minChildSize: 0.1,
-            maxChildSize: 0.99,
-            builder: (BuildContext context, ScrollController scrollController) {
-              return Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(16),
-                    topRight: Radius.circular(16),
-                  ),
-                ),
-                 //child: CardView(id: 2, text: "bonjour@", choice0: 'kdfk', choice1: 'okok', progress: 3)
-                child: ListView.builder(
-                  controller: scrollController,
-                  itemCount: 1, // Nombre d'éléments dans la liste
-                  itemBuilder: (BuildContext context, int index) {
-                    //return CardView(id: 2, text: "bonjour@", choice0: 'kdfk', choice1: 'okok', progress: 3);
-                    
-                  },
-                ),
-              );
-            },
-          ),
           // Align(
           //   alignment: Alignment.bottomCenter,
           //   child: Container(
@@ -313,11 +297,8 @@ class _MainViewState extends State<MainView>
           //     ),
           //   ),
           // ),
-          
         ],
-        
       ),
-     
     );
   }
 }
