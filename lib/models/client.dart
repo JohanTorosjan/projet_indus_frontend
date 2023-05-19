@@ -1,7 +1,3 @@
-import 'dart:ffi';
-
-import 'package:flutter/cupertino.dart';
-
 class Client {
   final int? id;
   final String? firebase_id;

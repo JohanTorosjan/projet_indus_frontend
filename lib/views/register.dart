@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:flutter/material.dart';
 import '../models/client.dart';
 import '../services/AuthService.dart';
@@ -69,7 +67,7 @@ class _RegisterState extends State<Register> {
         return Theme(
           data: theme.copyWith(
             colorScheme: theme.colorScheme.copyWith(
-              primary: Color.fromARGB(255, 0, 0, 0), // Changez la couleur ici
+              primary: const Color.fromARGB(255, 0, 0, 0), // Changez la couleur ici
             ),
           ),
           child: child!,
@@ -82,7 +80,7 @@ class _RegisterState extends State<Register> {
         _dateController.text = DateFormat('dd/MM/yyyy').format(picked);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Vous devez avoir au moins 18 ans')),
+          const SnackBar(content: Text('Vous devez avoir au moins 18 ans')),
         );
       }
     }
@@ -133,6 +131,7 @@ class _RegisterState extends State<Register> {
                           }
                           return 'Entrez une adresse mail valide';
                         }
+                        return null;
                       },
                       decoration: const InputDecoration(
                         hintText: 'Email',
@@ -157,7 +156,7 @@ class _RegisterState extends State<Register> {
                           return 'Mot de passe obligatoire';
                         }
                         if (value.trim().length < 8) {
-                          return 'Le mot de passe doit faire au moins caractères';
+                          return 'Le mot de passe doit faire au moins 8 caractères';
                         }
                         return null;
                       },
@@ -215,7 +214,7 @@ class _RegisterState extends State<Register> {
                       controller: _dateController,
                       onTap: () {
                         FocusScope.of(context).requestFocus(
-                            new FocusNode()); // Retire le focus du TextFormField
+                            FocusNode()); // Retire le focus du TextFormField
                         _selectDate(context);
                       },
                       validator: (value) {
