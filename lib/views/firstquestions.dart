@@ -30,7 +30,7 @@ class _FirstQuestionsState extends State<FirstQuestions> {
   @override
   void initState() {
     super.initState();
-    questions = QuestionService().getStarters();
+    questions = questionService.getStarters();
     questions.then((value) {
       questionList = value;
     });

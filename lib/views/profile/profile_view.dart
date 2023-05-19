@@ -85,19 +85,19 @@ class ProfileViewState extends State<ProfileView> {
               backgroundImage: AssetImage('assets/profile_logo.png'),
             ),
             const SizedBox(height: 20.0),
-            Text('Name: ${client.name}'),
-            Text('Email: ${client.email}'),
-            Text('Instagram: ${client.instagram ?? "Not available"}'),
-            Text('DoB: ${client.dob}'),
+            Text('Name: ${widget.client.name}'),
+            Text('Email: ${widget.client.email}'),
+            Text('Instagram: ${widget.client.instagram ?? "Not available"}'),
+            Text('DoB: ${widget.client.dob}'),
             const SizedBox(height: 20.0),
             ElevatedButton(
               child: const Text('Update Profile'),
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => UpdateProfileView(client: client),
-                  ),
-                );
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //   //  builder: (context) => UpdateProfileView(client: client),
+                //   ),
+                //);
               },
             ),
           ],

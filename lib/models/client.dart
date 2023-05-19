@@ -9,7 +9,7 @@ class Client {
   final String? name;
   final String? instagram;
   final DateTime? dob;
-  final bool? has_active_session;
+  bool? has_active_session;
   final int? answered_questions;
 
   Client(

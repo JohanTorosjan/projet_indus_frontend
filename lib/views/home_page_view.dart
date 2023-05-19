@@ -2,16 +2,21 @@ import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:projet_indus/services/AuthService.dart';
+import 'package:projet_indus/services/eventservice.dart';
 import 'package:projet_indus/views/bunch_of_quesions.dart';
 import 'package:projet_indus/views/card_view.dart';
+import 'package:projet_indus/views/event_view.dart';
 import 'package:projet_indus/views/firstquestions.dart';
 import 'package:projet_indus/views/profile/profile_view.dart';
 import 'package:projet_indus/views/question_usages.dart';
 import 'package:swipeable_card_stack/swipeable_card_stack.dart';
+import 'package:wave_progress_widget/wave_progress.dart';
 
 import '../models/client.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_size_and_fade/animated_size_and_fade.dart';
+
+import '../models/event.dart';
 
 class MainView extends StatefulWidget {
   const MainView({super.key, required this.client});
@@ -29,12 +34,47 @@ class _MainViewState extends State<MainView>
   bool active_session = true;
   double draggableSheetHeight = 0.1;
 
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+
+
+  Event? event;
+  EventService eventService = EventService();
   @override
   void initState() {
     super.initState();
+
+
+    // if (event == null) {
+    //   widget.client.has_active_session = true;
+    // }
+
     setState(
       () => active_session = widget.client.has_active_session!,
     );
+    // Créer l'AnimationController avec une durée et un vsync
+    _animationController = AnimationController(
+      duration: Duration(milliseconds: 1000),
+      vsync: this,
+    );
+
+    // Définir la courbe d'animation (par exemple, une courbe en forme de pulsation)
+    final curve = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    );
+
+    // Définir l'animation en utilisant un Tween pour animer la propriété souhaitée (par exemple, l'échelle)
+    _animation = Tween<double>(begin: 1.0, end: 1.2).animate(curve);
+
+    // Démarrer l'animation en boucle
+    _animationController.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   void closeMainButton() {
@@ -47,6 +87,18 @@ class _MainViewState extends State<MainView>
     setState(() {
       draggableSheetHeight = 0.1;
     });
+  }
+
+  void fetchEvent() async {
+    Event? eventFuture =  await eventService.getEvent(widget.client.id);
+    setState(() {
+         event = eventFuture;
+    });
+    if(eventFuture != null){
+      setState(() {
+        widget.client.has_active_session = true;
+      });
+    }
   }
 
   @override
@@ -69,7 +121,14 @@ class _MainViewState extends State<MainView>
                     child: Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.purple.shade400,
+                       gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    Colors.blue.shade600,
+                                    Colors.blue.shade900,
+                                  ],
+                                ),
                       ),
                     ),
                   ),
@@ -87,7 +146,14 @@ class _MainViewState extends State<MainView>
                       child: Container(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.purple.shade400,
+                         gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    Colors.blue.shade600,
+                                    Colors.blue.shade900,
+                                  ],
+                                ),
                         ),
                       ),
                     ),
@@ -106,36 +172,24 @@ class _MainViewState extends State<MainView>
               ],
             )
           : null,
-      extendBodyBehindAppBar: false,
-      body: Stack(
-        children: [
-          // Bubbles around the main button
-          // ...List.generate(
-          //   10,
-          //   (index) => Positioned(
-          //     left: MediaQuery.of(context).size.width * 0.5 +
-          //         80 * cos(2 * pi * index / 10), // Add extra space
-          //     top: MediaQuery.of(context).size.height * 0.5 +
-          //         80 * sin(2 * pi * index / 10), // Add extra space
-          //     child: Container(
-          //       width: 24,
-          //       height: 24,
-          //       decoration: BoxDecoration(
-          //         color: Colors.blue.shade300,
-          //         borderRadius: BorderRadius.circular(12),
-          //       ),
-          //     ),
-          //   ),
-          // ),
-          Center(
-//  child: ScaleTransition(
-//           scale: _animation,
-//           child: ElevatedButton(
-//             child: const Text('Appeler la nouvelle vue'),
-//             onPressed: _afficherNouvelleVue,
-//           ),
-//         ),
+      extendBodyBehindAppBar: true,
+      body: Container(
+        decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.purple.shade400,
+              Colors.purple.shade900,
+          ],
+          begin: Alignment.topLeft, // Point de départ du dégradé
+          end: Alignment.bottomRight, // Point d'arrivée du dégradé
+        ),
+      ),
+        child:
+      Stack(
 
+        children: [
+          
+          Center(
             child: !active_session
                 ? AnimatedSizeAndFade(
                     vsync: this,
@@ -152,8 +206,8 @@ class _MainViewState extends State<MainView>
                               });
                             },
                             child: Container(
-                              width: 200,
-                              height: 200,
+                              width: 250,
+                              height: 250,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 gradient: LinearGradient(
@@ -172,9 +226,8 @@ class _MainViewState extends State<MainView>
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 20,
+                                    fontSize: 24,
                                     fontWeight: FontWeight.bold,
-                                    shadows: [shadow],
                                   ),
                                 ),
                               ),
@@ -184,11 +237,8 @@ class _MainViewState extends State<MainView>
                     vsync: this,
                     fadeDuration: Duration(milliseconds: 300),
                     child: afficherNouvelleVue
-                        ? //TODO -> CHANGER EN VUE EVENEMENT
-                        QuestionUsages(
-                            client: widget.client,
-                            close: closeMainButton,
-                          )
+                        ? 
+                       EventView(client: widget.client,close: closeMainButton, event: event)
                         : InkWell(
                             onTap: () {
                               setState(() {
@@ -196,8 +246,8 @@ class _MainViewState extends State<MainView>
                               });
                             },
                             child: Container(
-                              width: 200,
-                              height: 200,
+                              width: 250,
+                              height: 250,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 gradient: LinearGradient(
@@ -216,35 +266,13 @@ class _MainViewState extends State<MainView>
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 20,
+                                    fontSize: 24,
                                     fontWeight: FontWeight.bold,
-                                    shadows: [shadow],
                                   ),
                                 ),
                               ),
                             ),
                           )),
-
-            // child: ElevatedButton(
-            //   onPressed: () {
-            //     Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => QuestionUsages(client: widget.client,)),
-            // );
-            //   },
-            //   style: ElevatedButton.styleFrom(
-            //     backgroundColor: Colors.blue,
-            //     padding: const EdgeInsets.all(60),
-            //     shape: const CircleBorder(),
-            //     elevation: 4,
-            //   ),
-            //   child: active_session
-            //       ? const Text(
-            //           'Ma sortie de ce soir',
-            //           style: TextStyle(fontSize: 24, color: Colors.white),
-            //         )
-            //       : const Text("Sortir ce soir"),
-            // ),
           ),
 
           // Align(
@@ -299,6 +327,7 @@ class _MainViewState extends State<MainView>
           // ),
         ],
       ),
+      )
     );
   }
 }

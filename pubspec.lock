@@ -373,6 +373,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  wave_progress_widget:
+    dependency: "direct main"
+    description:
+      name: wave_progress_widget
+      sha256: "360c28e105717b1a437c3300ce14130f54a5282ecf24f12511f8c59158beed15"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
 sdks:
   dart: ">=2.19.6 <3.0.0"
   flutter: ">=3.3.0"
