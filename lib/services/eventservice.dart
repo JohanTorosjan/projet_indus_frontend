@@ -1,3 +1,4 @@
+import 'package:projet_indus/DAOs/clientdao.dart';
 import 'package:projet_indus/DAOs/eventdao.dart';
 import 'package:projet_indus/DTOs/eventrequestdto.dart';
 
@@ -26,5 +27,9 @@ class EventService {
     } else {
       return event;
     }
+  }
+
+  Future<void> confirmAccount(int? id) async {
+    return await ClientDAO().confirmeAccount(id);
   }
 }

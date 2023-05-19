@@ -7,6 +7,7 @@ class Client {
   final DateTime? dob;
   bool? has_active_session;
   final int? answered_questions;
+  bool? confirmed;
 
   Client(
       {this.id,

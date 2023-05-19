@@ -34,8 +34,8 @@ class EventDAO {
           for (var participant in jsonData["participants"]) {
             participant.add(Participants.fromJson(participant));
           }
-          event.participants = participants;
         }
+        event.participants = participants;
         return event;
       }
     } catch (err) {
@@ -51,19 +51,17 @@ class EventDAO {
       final jsonString = response.body;
       print(response.statusCode);
       if (response.statusCode == 200) {
-         final jsonData = json.decode(response.body);
-        print('ok decode');
+        final jsonData = json.decode(utf8.decode(jsonString.runes.toList()));
         print(jsonData);
         Event event = Event.fromJson(jsonData);
         List<Participants> participants = [];
-        if (event.is_a_new_event == false) {
-          for (var participant in jsonData["participants"]) {
-            participant.add(Participants.fromJson(participant));
-          }
-          event.participants = participants;
+        print(jsonData["participants"]);
+        for (var participant in jsonData["participants"]) {
+          participants.add(Participants.fromJson(participant));
         }
-        return event;
 
+        event.participants = participants;
+        return event;
       }
     } catch (err) {
       print(err);

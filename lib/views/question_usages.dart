@@ -91,7 +91,9 @@ class _QuestionUsagesState extends State<QuestionUsages> {
       extendBodyBehindAppBar: true,
       body: Container(
         decoration: BoxDecoration(
+          
           gradient: LinearGradient(
+            
             colors: [
               Colors.blue.shade600,
               Colors.blue.shade900,
@@ -125,7 +127,7 @@ class _QuestionUsagesState extends State<QuestionUsages> {
                 //   ),
                 // ),
                 // SizedBox(height: 20),
-                 SizedBox(height: 35),
+               Spacer(),
                 Expanded(
                   child: friends.length > 0
                       ? ListView.builder(
@@ -161,7 +163,7 @@ class _QuestionUsagesState extends State<QuestionUsages> {
                         )
                       : Center(
                           child: const Text(
-                          "Tu n'as pas encore d'ami.es ... Sors pour en trouver ! ",
+                          "Tu n'as pas encore d'ami.es ... sors pour en trouver ! ",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 20,
