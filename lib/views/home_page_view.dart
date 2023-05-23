@@ -1,8 +1,11 @@
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:projet_indus/models/question.dart';
 import 'package:projet_indus/services/AuthService.dart';
 import 'package:projet_indus/services/eventservice.dart';
+import 'package:projet_indus/services/questionService.dart';
 import 'package:projet_indus/views/bunch_of_quesions.dart';
 import 'package:projet_indus/views/card_view.dart';
 import 'package:projet_indus/views/event_view.dart';
@@ -30,7 +33,6 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView>
     with SingleTickerProviderStateMixin {
   bool afficherNouvelleVue = false;
-
   bool active_session = true;
   double draggableSheetHeight = 0.1;
 
@@ -38,11 +40,16 @@ class _MainViewState extends State<MainView>
   late Animation<double> _animation;
 
   Event? event;
+  List<Question> questionsList = [];
   EventService eventService = EventService();
+  QuestionService questionService = QuestionService();
   @override
   void initState() {
     super.initState();
     fetchEvent();
+
+    fetchQuestions();
+
     // if (event == null) {
     //   widget.client.has_active_session = true;
     // }
@@ -81,17 +88,8 @@ class _MainViewState extends State<MainView>
     });
   }
 
-  void closeSwipeSection() {
-    setState(() {
-      draggableSheetHeight = 0.1;
-    });
-  }
-
   void fetchEvent() async {
     Event? eventFuture = await eventService.getEvent(widget.client.id);
-    
-
-    
     setState(() {
       event = eventFuture;
     });
@@ -100,6 +98,14 @@ class _MainViewState extends State<MainView>
         widget.client.has_active_session = true;
       });
     }
+  }
+
+  void fetchQuestions() async {
+    List<Question>? questionsFuture =
+        await questionService.getBunchOfQuestions(widget.client.id!);
+    setState(() {
+      questionsList = questionsFuture;
+    });
   }
 
   @override
@@ -162,12 +168,11 @@ class _MainViewState extends State<MainView>
                           iconSize: 32, // Increase the size of the button
                           icon: const Icon(Icons.account_circle),
                           onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Text("aa");
-                                  // return ProfileView(client: widget.client);
-                                });
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProfileView(client: widget.client)));
                           }),
                     ],
                   ),
@@ -275,57 +280,89 @@ class _MainViewState extends State<MainView>
                                 ),
                               )),
               ),
-
-              // Align(
-              //   alignment: Alignment.bottomCenter,
-              //   child: Container(
-              //     width: MediaQuery.of(context).size.width,
-              //     height: MediaQuery.of(context).size.height * 0.1,
-              //     decoration: BoxDecoration(
-              //       borderRadius: const BorderRadius.only(
-              //         topLeft: Radius.circular(30),
-              //         topRight: Radius.circular(30),
-              //       ),
-              //       gradient: LinearGradient(
-              //         begin: Alignment.topLeft,
-              //         end: Alignment.bottomRight,
-              //         colors: [
-              //           Colors.purple.shade400,
-              //           Colors.purple.shade100,
-              //         ],
-              //       ),
-              //     ),
-              //     child: Center(
-              //       child: InkWell(
-              //         onTap: () {
-              //           showDialog(
-              //             context: context,
-              //             builder: (BuildContext context) {
-              //               return AlertDialog(
-              //                 content: const Text('Plus de questions à mettre ici'),
-              //                 actions: [
-              //                   TextButton(
-              //                     onPressed: () => FirebaseAuth.instance
-              //                         .signOut(), // Navigator.of(context).pop(),
-              //                     child: const Text('Close'),
-              //                   ),
-              //                 ],
-              //               );
-              //             },
-              //           );
-              //         },
-              //         child: const Text(
-              //           'Affiner tes envies',
-              //           style: TextStyle(
-              //             fontSize: 18,
-              //             color: Colors.white,
-              //             decoration: TextDecoration.underline,
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              !afficherNouvelleVue
+                  ? Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.1,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
+                          ),
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Colors.purple.shade400,
+                              Colors.purple.shade100,
+                            ],
+                          ),
+                        ),
+                        child: Center(
+                          child: InkWell(
+                            onTap: () {
+                              if (questionsList.isNotEmpty) {
+                                Navigator.push(
+                                  context,
+                                  //   MaterialPageRoute(
+                                  // builder: (context) =>
+                                  //     ProfileView(client: widget.client))
+                                  PageTransition(
+                                    type: PageTransitionType
+                                        .bottomToTop, // Spécifie la direction de la transition
+                                    child: BunchOfQuestions(
+                                        client: widget.client,
+                                        close: closeMainButton,
+                                        questions: questionsList),
+                                  ),
+                                );
+                              }
+                              else{
+                                  showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Colors.purple.shade400,
+              title: Text("Tu as répondu à toutes les questions pour aujourd'hui !\nReviens demain pour de nouvelles questions",textAlign: TextAlign.center,),
+              
+              actions: <Widget>[
+                Center(child:
+                ElevatedButton(
+                  child: Text('Ok'),
+                  style: ElevatedButton.styleFrom(
+                          primary: Colors.blue.shade600,
+                          onPrimary: Colors.white,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),)
+              ],
+            );
+          },
+        );
+                              }
+                            },
+                            child: const Text(
+                              'Affiner tes envies',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  : Text(""),
             ],
           ),
         ));

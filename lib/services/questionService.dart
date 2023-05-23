@@ -24,7 +24,6 @@ class QuestionService {
 
   Future<List<QuestionsUsage>> getQuestionsUsage() async {
     List<QuestionsUsage>? questionsUsageList = [];
-    print("ICI");
 
     questionsUsageList = await questionDAO.getQuestionsUsages();
     if (questionsUsageList != null) {
@@ -32,6 +31,19 @@ class QuestionService {
     } else {
       List<QuestionsUsage> emptyList = [];
       return emptyList;
+    }
+  }
+
+  Future<List<Question>> getBunchOfQuestions(int id) async {
+    List<Question>? questionList = [];
+    questionList = await questionDAO.getBunchOfQuestions(id);
+
+    if (questionList != null) {
+      print("ICIIIIII");
+      return questionList;
+    } else {
+      List<Question> emptyQuestionList = [];
+      return emptyQuestionList;
     }
   }
 }

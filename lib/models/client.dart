@@ -1,12 +1,18 @@
 class Client {
-  final int? id;
-  final String? firebase_id;
-  final String? email;
-  final String? name;
-  final String? instagram;
-  final DateTime? dob;
+   int? id;
+  
+   String? firebase_id;
+  
+   String? email;
+  
+   String? name;
+  
+   String? instagram;
+  
+  DateTime? dob;
   bool? has_active_session;
-  final int? answered_questions;
+  
+   int? answered_questions;
   bool? confirmed;
 
   Client(

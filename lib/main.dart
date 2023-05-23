@@ -69,14 +69,18 @@ class MyApp extends StatelessWidget {
    Widget build(BuildContext context) {
 
     return StreamProvider<Client?>.value(
+      
        value: AuthService().user.transform(StreamTransformer.fromHandlers(
     handleData: (futureClient, sink) async {
       sink.add(await futureClient);
     },
   )),
       initialData: null,
+      
       child: MaterialApp(
+          
         theme: ThemeData(
+          
           brightness: Brightness.light,
           primaryColor: Colors.deepPurple,
           buttonTheme: ButtonThemeData(
@@ -88,6 +92,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Inter',
         ),
         home: Wrapper(),
+        
       ),);
 
 

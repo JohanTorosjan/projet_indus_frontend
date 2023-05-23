@@ -28,17 +28,15 @@ class _RegisterState extends State<Register> {
     final email = _emailController.value.text;
     final password = _passwordController.value.text;
     final prenom = _prenomController.value.text;
-    final insta = _instaController.value.text.isEmpty
-        ? ""
-        : _passwordController.value.text;
+    final insta =
+        _instaController.value.text.isEmpty ? "" : _instaController.value.text;
     final dob = _dateController.value.text;
     Client user = await AuthService()
         .registerWithEmailAndPassword(email, password, prenom, insta, dob);
     if (user.firebase_id == null) {
       _error = true;
       setState(() => _error = true);
-    }
-    else {
+    } else {
       print('NEW USER FROM VUE : ');
       print(user.firebase_id);
       Client finaluser =
@@ -58,6 +56,7 @@ class _RegisterState extends State<Register> {
 
   Future<void> _selectDate(BuildContext context) async {
     final ThemeData theme = Theme.of(context);
+
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -67,7 +66,8 @@ class _RegisterState extends State<Register> {
         return Theme(
           data: theme.copyWith(
             colorScheme: theme.colorScheme.copyWith(
-              primary: const Color.fromARGB(255, 0, 0, 0), // Changez la couleur ici
+              primary:
+                  const Color.fromARGB(255, 0, 0, 0), // Changez la couleur ici
             ),
           ),
           child: child!,
@@ -75,6 +75,7 @@ class _RegisterState extends State<Register> {
       },
     );
     if (picked != null) {
+    
       final age = _calculateAge(picked);
       if (age >= 18) {
         _dateController.text = DateFormat('dd/MM/yyyy').format(picked);

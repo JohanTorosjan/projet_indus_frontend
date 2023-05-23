@@ -65,12 +65,14 @@ class ClientDAO {
 
     // Replace this URL with the correct endpoint for updating a client.
     final String apiUrl = 'https://localhost:8443/user/${updatedClient.id}';
+    print(apiUrl);
 
     try {
       final jsonBody = json.encode(updatedClient.toJson());
       final response =
           await http.put(Uri.parse(apiUrl), headers: headers, body: jsonBody);
-
+      print(response.statusCode);
+      print(jsonBody);
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         return Client.fromJson(jsonData as Map<String, dynamic>);
@@ -83,7 +85,7 @@ class ClientDAO {
     }
   }
 
-    Future<void> confirmeAccount(int? id) async {
+  Future<void> confirmeAccount(int? id) async {
     final String apiUrl = 'https://localhost:8443/user/confirmedAccount/${id}';
 
     try {

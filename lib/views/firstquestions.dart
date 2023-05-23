@@ -2,12 +2,14 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:projet_indus/DTOs/ratingdto.dart';
 import 'package:projet_indus/models/client.dart';
 import 'package:projet_indus/models/question.dart';
 import 'package:projet_indus/services/AuthService.dart';
 import 'package:projet_indus/services/questionService.dart';
 import 'package:projet_indus/views/card_view.dart';
+import 'package:projet_indus/views/home_page_view.dart';
 import 'package:swipeable_card_stack/swipeable_card_stack.dart';
 
 class FirstQuestions extends StatefulWidget {
@@ -52,82 +54,83 @@ class _FirstQuestionsState extends State<FirstQuestions> {
         SwipeableCardSectionController();
     int? idUtilisateur = widget.client.id;
     return Scaffold(
-         backgroundColor: Colors.purple.shade100,
-        appBar: AppBar(
-          title: const Text('Questions d\'usage'),
-        ),
-        body: SafeArea(
-            child: FutureBuilder<List<Question>>(
-          future: questions,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SwipeableCardsSection(
-                    cardController: cardController,
-                    context: context,
-                    items: questionList
-                        .getRange(0, min(3, questionList.length))
-                        .toList() // Convert Iterable to List
-                        .asMap() // Convert to a map to get index and value
-                        .map((index, question) =>
-                            MapEntry(index, _createCard(question, index)))
-                        .values
-                        .toList(),
-                    onCardSwiped: (dir, index, widget) {
-                      int questionId = (widget as CardView).id;
-                      if (dir == Direction.left) {
-                        RatingDTO ratingDTO =
-                            RatingDTO(id: questionId, choice: false);
-                        questionService.rating(idUtilisateur!, ratingDTO);
-                      } else if (dir == Direction.right) {
-                        RatingDTO ratingDTO =
-                            RatingDTO(id: questionId, choice: true);
-                        questionService.rating(idUtilisateur!, ratingDTO);
-                      }
-
-                      // Increment currentIndex after the card swipe action is complete
-                      if (currentIndex < 10) {
-                        currentIndex++;
-                      }
-
-                      // Add the next card
-                      if (nextCardIndex < questionList.length) {
-                        cardController.addItem(_createCard(
-                            questionList[nextCardIndex], currentIndex));
-                        nextCardIndex++; // Increment nextCardIndex
-                      }
-                    },
-                    enableSwipeUp: false,
-                    enableSwipeDown: false,
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(vertical: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        FloatingActionButton(
-                          child: const Icon(Icons.chevron_left),
-                          onPressed: () => cardController.triggerSwipeLeft(),
-                        ),
-                        FloatingActionButton(
-                          child: const Icon(Icons.chevron_right),
-                          onPressed: () => cardController.triggerSwipeRight(),
-                        ),
-                      ],
-                    ),
-                  )
+        body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.blue.shade600,
+                  Colors.blue.shade900,
                 ],
-              );
-            }
-          },
-        )
-      )
-    );
+                begin: Alignment.topLeft, // Point de départ du dégradé
+                end: Alignment.bottomRight, // Point d'arrivée du dégradé
+              ),
+            ),
+            child: SafeArea(
+                child: FutureBuilder<List<Question>>(
+              future: questions,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SwipeableCardsSection(
+                        cardController: cardController,
+                        context: context,
+                        items: questionList
+                            .getRange(0, min(3, questionList.length))
+                            .toList() // Convert Iterable to List
+                            .asMap() // Convert to a map to get index and value
+                            .map((index, question) =>
+                                MapEntry(index, _createCard(question, index)))
+                            .values
+                            .toList(),
+                        onCardSwiped: (dir, index, widget) {
+                          int questionId = (widget as CardView).id;
+                          if (dir == Direction.left) {
+                            RatingDTO ratingDTO =
+                                RatingDTO(id: questionId, choice: false);
+                            questionService.rating(idUtilisateur!, ratingDTO);
+                          } else if (dir == Direction.right) {
+                            RatingDTO ratingDTO =
+                                RatingDTO(id: questionId, choice: true);
+                            questionService.rating(idUtilisateur!, ratingDTO);
+                          }
+
+                          // Increment currentIndex after the card swipe action is complete
+                          if (currentIndex < 10) {
+                            currentIndex++;
+                          }
+
+                          if (currentIndex == 10) {
+                            swipeToMain();
+                          }
+
+                          // Add the next card
+                          if (nextCardIndex < questionList.length) {
+                            cardController.addItem(_createCard(
+                                questionList[nextCardIndex], currentIndex));
+                            nextCardIndex++; // Increment nextCardIndex
+                          }
+                        },
+                        enableSwipeUp: false,
+                        enableSwipeDown: false,
+                      ),
+                    ],
+                  );
+                }
+              },
+            ))));
+  }
+
+  void swipeToMain() {
+    Navigator.of(context).push(PageTransition(
+      alignment: Alignment.center,
+        type: PageTransitionType
+            .scale, // Spécifie la direction de la transition
+        child: MainView(client: widget.client)));
   }
 }

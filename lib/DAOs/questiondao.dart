@@ -35,6 +35,32 @@ class QuestionDAO {
     }
   }
 
+  Future<List<Question>?> getBunchOfQuestions(int id) async {
+    final String apiUrl =
+        'https://localhost:8443/questions/getBunchOfQuestions/$id';
+    print(apiUrl);
+
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+      final jsonString = response.body;
+      final jsonData = json.decode(utf8.decode(jsonString.runes.toList()));
+
+      if (response.statusCode == 200) {
+        List<Question> questionList = [];
+        for (var questionData in jsonData) {
+          Question question = Question.fromJson(questionData);
+          questionList.add(question);
+        }
+        return questionList;
+      } else {
+        return null;
+      }
+    } catch (err) {
+      print(err);
+      return null;
+    }
+  }
+
   void rate(int idUtilisateur, RatingDTO ratingDTO) async {
     final String apiUrl =
         'https://localhost:8443/questions/rating/$idUtilisateur';

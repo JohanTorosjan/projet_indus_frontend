@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:projet_indus/DAOs/clientdao.dart';
 import 'package:projet_indus/services/eventservice.dart';
 import 'package:projet_indus/views/home_page_view.dart';
@@ -38,7 +39,6 @@ class _EventViewState extends State<EventView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     for (int i = 0; i < widget.event!.participants.length; i++) {
       if (widget.event!.participants[i].id == widget.client.id) {
@@ -71,11 +71,19 @@ class _EventViewState extends State<EventView> {
                   widget.client.has_active_session = true;
                   Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              MainView(client: widget.client)));
+                      PageTransition(
+                        type: PageTransitionType
+                            .fade, // Spécifie la direction de la transition
+                        child: MainView(client: widget.client),
+                      ));
                 } else {
-                  widget.close();
+                   Navigator.push(
+                      context,
+                      PageTransition(
+                        type: PageTransitionType
+                            .fade, // Spécifie la direction de la transition
+                        child: MainView(client: widget.client),
+                      ));
                 }
               },
             )),
@@ -104,7 +112,7 @@ class _EventViewState extends State<EventView> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 30,
+                      fontSize: 40,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
