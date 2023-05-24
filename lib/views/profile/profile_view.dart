@@ -33,6 +33,7 @@ class ProfileViewState extends State<ProfileView> {
   bool _loadingPassword = false;
 
   AuthService authService = AuthService();
+
   @override
   void initState() {
     super.initState();
@@ -94,42 +95,31 @@ class ProfileViewState extends State<ProfileView> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        // title: Text(
-        //   'Avec des ami.es ? ',
-        //   style: TextStyle(
-        //     fontWeight: FontWeight.bold,
-        //     fontSize: 30,
-        //     color: Color.fromARGB(255, 255, 255, 255),
-        //     fontFamily: 'Inter',
-        //   ),
-        // ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
-            // Navigator.push(
-            //   context,
-            //   PageTransition(
-            //     type: PageTransitionType
-            //         .fade, // Spécifie la direction de la transition
-            //     child: MainView(client: widget.client),
-            //   ),
-            // );
           },
         ),
       ),
       extendBodyBehindAppBar: true,
       body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.blue.shade600, Colors.blue.shade900],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blue.shade600, Colors.blue.shade900],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-          padding: const EdgeInsets.all(20.0),
-          child: Center(
-              child: Padding(
+        ),
+        padding: const EdgeInsets.all(20.0),
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints viewportConstraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: viewportConstraints.maxHeight,
+                ),
+                child: Padding(
                   padding: EdgeInsets.all(20),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -148,17 +138,6 @@ class ProfileViewState extends State<ProfileView> {
                       Container(
                           padding: EdgeInsets.symmetric(
                               horizontal: 30, vertical: 15),
-                          // decoration: BoxDecoration(
-                          //   borderRadius: BorderRadius.circular(10),
-                          //   gradient: LinearGradient(
-                          //     colors: [
-                          //       Colors.purple.shade400,
-                          //       Colors.purple.shade900,
-                          //     ],
-                          //     begin: Alignment.topCenter,
-                          //     end: Alignment.bottomCenter,
-                          //   ),
-                          // ),
                           child: Form(
                             key: _formKey,
                             child: Column(
@@ -196,7 +175,6 @@ class ProfileViewState extends State<ProfileView> {
                                 const SizedBox(
                                   height: 20,
                                 ),
-
                                 TextFormField(
                                   style: TextStyle(
                                     fontSize: 15,
@@ -219,7 +197,6 @@ class ProfileViewState extends State<ProfileView> {
                                 const SizedBox(
                                   height: 20,
                                 ),
-
                                 TextFormField(
                                   style: TextStyle(
                                     fontSize: 15,
@@ -363,10 +340,9 @@ class ProfileViewState extends State<ProfileView> {
                                         color: Colors.white,
                                       ),
                                     ),
-                                    Spacer(),
                                     IconButton(
-                                        iconSize:
-                                            32, // Increase the size of the button
+                                        iconSize: 32,
+                                        // Increase the size of the button
                                         icon: const Icon(
                                           Icons.exit_to_app,
                                           color: Colors.white,
@@ -379,8 +355,6 @@ class ProfileViewState extends State<ProfileView> {
                                 const SizedBox(
                                   height: 60,
                                 ),
-
-                                ///////////////////////////////////////////
                               ],
                             ),
                           )),
@@ -412,9 +386,14 @@ class ProfileViewState extends State<ProfileView> {
                                 ),
                               ),
                       ),
-                      Spacer(),
                     ],
-                  )))),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 
@@ -545,8 +524,8 @@ class ProfileViewState extends State<ProfileView> {
                   ],
                 )),
           ),
-          backgroundColor: Colors
-              .transparent, // Définir la couleur de fond de l'AlertDialog comme transparente
+          backgroundColor: Colors.transparent,
+          // Définir la couleur de fond de l'AlertDialog comme transparente
           elevation: 0, // Supprimer l'ombre de l'AlertDialog
         );
       },
