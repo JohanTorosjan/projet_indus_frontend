@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:projet_indus/DTOs/ratingdto.dart';
 import 'package:projet_indus/models/answers.dart';
@@ -11,8 +12,10 @@ import 'package:http/http.dart' as http;
 import '../models/questionsusage.dart';
 
 class QuestionDAO {
+  static String API_URL = DotEnv().env['API_URL']!;
+
   Future<List<Question>?> getStarters() async {
-    final String apiUrl = 'https://localhost:8443/questions/getStarters';
+    final String apiUrl = '$API_URL/questions/getStarters';
     print(apiUrl);
     try {
       final response = await http.get(Uri.parse(apiUrl));
@@ -37,7 +40,7 @@ class QuestionDAO {
 
   Future<List<Question>?> getBunchOfQuestions(int id) async {
     final String apiUrl =
-        'https://localhost:8443/questions/getBunchOfQuestions/$id';
+        '$API_URL/questions/getBunchOfQuestions/$id';
     print(apiUrl);
 
     try {
@@ -63,7 +66,7 @@ class QuestionDAO {
 
   void rate(int idUtilisateur, RatingDTO ratingDTO) async {
     final String apiUrl =
-        'https://localhost:8443/questions/rating/$idUtilisateur';
+        '$API_URL/questions/rating/$idUtilisateur';
     final headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     };
@@ -96,7 +99,7 @@ class QuestionDAO {
   }
 
   Future<List<QuestionsUsage>?> getQuestionsUsages() async {
-    final String apiUrl = 'https://localhost:8443/usages_questions';
+    final String apiUrl = '$API_URL/usages_questions';
     print(apiUrl);
 
     try {
