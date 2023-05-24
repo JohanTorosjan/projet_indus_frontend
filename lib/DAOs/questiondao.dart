@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 import '../models/questionsusage.dart';
 
 class QuestionDAO {
-  static String API_URL = DotEnv().env['API_URL']!;
+  static String API_URL = "https://sortir-ce-soir-back.cluster-ig4.igpolytech.fr";
 
   Future<List<Question>?> getStarters() async {
     final String apiUrl = '$API_URL/questions/getStarters';
