@@ -121,8 +121,9 @@ class _RegisterState extends State<Register> {
               padding: const EdgeInsets.all(16.0),
               child: Form(
                 key: _formKey,
-                
-                child: Column(
+                child: Center(
+                  child: SingleChildScrollView(
+                    child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -301,6 +302,8 @@ class _RegisterState extends State<Register> {
                           : const Text("Se connecter",style: TextStyle(color: Colors.white),),
                     ),
                   ],
+                ),
+                ),
                 ),
               )
           )
