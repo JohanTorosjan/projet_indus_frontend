@@ -23,9 +23,9 @@ class FirstQuestions extends StatefulWidget {
 
 class _FirstQuestionsState extends State<FirstQuestions> {
   final QuestionService questionService = QuestionService();
+  late SwipeableCardSectionController cardController;
 
   late Future<List<Question>> questions;
-  late List<Question> questionList;
   int currentIndex = 0;
   int nextCardIndex = 3;
 
@@ -48,11 +48,8 @@ class _FirstQuestionsState extends State<FirstQuestions> {
       });
     });
 
+    cardController = SwipeableCardSectionController();
     questions = questionService.getStarters();
-
-    questions.then((value) {
-      questionList = value;
-    });
   }
 
   CardView _createCard(Question question, int index) {
@@ -67,15 +64,13 @@ class _FirstQuestionsState extends State<FirstQuestions> {
 
   @override
   Widget build(BuildContext context) {
-    SwipeableCardSectionController cardController =
-        SwipeableCardSectionController();
     int? idUtilisateur = widget.client.id;
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           toolbarHeight: 100,
-          title: Text(
+          title: const Text(
             textAlign: TextAlign.center,
             "Réponds à quelques\n questions avant\n de commencer!",
             style: TextStyle(
@@ -102,12 +97,13 @@ class _FirstQuestionsState extends State<FirstQuestions> {
                   future: questions,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator(
+                      return const CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       );
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
-                    } else {
+                    } else if (snapshot.hasData && snapshot.data != null) {
+                      List<Question> questionList = snapshot.data!;
                       return SwipeableCardsSection(
                         cardController: cardController,
                         context: context,
@@ -120,15 +116,16 @@ class _FirstQuestionsState extends State<FirstQuestions> {
                             .values
                             .toList(),
                         onCardSwiped: (dir, index, widget) {
+                          if (idUtilisateur == null) return;
                           int questionId = (widget as CardView).id;
                           if (dir == Direction.left) {
                             RatingDTO ratingDTO =
                                 RatingDTO(id: questionId, choice: false);
-                            questionService.rating(idUtilisateur!, ratingDTO);
+                            questionService.rating(idUtilisateur, ratingDTO);
                           } else if (dir == Direction.right) {
                             RatingDTO ratingDTO =
                                 RatingDTO(id: questionId, choice: true);
-                            questionService.rating(idUtilisateur!, ratingDTO);
+                            questionService.rating(idUtilisateur, ratingDTO);
                           }
 
                           // Increment currentIndex after the card swipe action is complete
@@ -149,6 +146,11 @@ class _FirstQuestionsState extends State<FirstQuestions> {
                         },
                         enableSwipeUp: false,
                         enableSwipeDown: false,
+                      );
+                    }
+                    else {
+                      return const CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       );
                     }
                   })
