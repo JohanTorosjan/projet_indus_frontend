@@ -34,6 +34,11 @@ dependencies:
     sdk: flutter
   url_launcher: ^6.0.0
   page_transition: ^2.0.0
+<<<<<<< HEAD
+  flutter_dotenv: ^2.1.0
+  
+=======
+>>>>>>> 36dd995259d2706964af64059d2bfeff5efd87b3
 
   wave_progress_widget: ^0.0.1
   animated_size_and_fade: ^2.0.0
