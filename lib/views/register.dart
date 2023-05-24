@@ -103,6 +103,7 @@ class _RegisterState extends State<Register> {
       backgroundColor: Colors.purple.shade100,
 
       body:Container(
+
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
@@ -115,11 +116,12 @@ class _RegisterState extends State<Register> {
           ), 
       child:
       
-      SafeArea(
+      Expanded(
           child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Form(
                 key: _formKey,
+                
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
