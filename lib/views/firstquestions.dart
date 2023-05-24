@@ -97,9 +97,7 @@ class _FirstQuestionsState extends State<FirstQuestions> {
                   future: questions,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      );
+                      return LoadingScreen();
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else if (snapshot.hasData && snapshot.data != null) {
@@ -147,8 +145,7 @@ class _FirstQuestionsState extends State<FirstQuestions> {
                         enableSwipeUp: false,
                         enableSwipeDown: false,
                       );
-                    }
-                    else {
+                    } else {
                       return const CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       );
@@ -158,36 +155,27 @@ class _FirstQuestionsState extends State<FirstQuestions> {
   }
 
   void swipeToMain() {
-    Navigator.of(context).pop();
-    // Navigator.of(context).push(PageTransition(
-    //     alignment: Alignment.center,
-    //     type:
-    //         PageTransitionType.scale, // Spécifie la direction de la transition
-    //     child: MainView(client: widget.client)));
+    //Navigator.of(context).pop();
+    Navigator.of(context).pushAndRemoveUntil(PageTransition(
+        alignment: Alignment.center,
+        type:
+            PageTransitionType.scale, // Spécifie la direction de la transition
+        child: MainView(client: widget.client))
+        ,(route) => false,);
   }
 }
 
 class LoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.blue,
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.blue.shade600,
-                Colors.blue.shade900,
-              ],
-              begin: Alignment.topLeft, // Point de départ du dégradé
-              end: Alignment.bottomRight, // Point d'arrivée du dégradé
-            ),
-          ),
-          child: Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-            ),
-          ),
+    return Container(
+      height:  MediaQuery.of(context).size.height/2,
+      width:  MediaQuery.of(context).size.width,
+        child:Center(child: 
+            CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.purple),
+           
+            )
         ));
   }
 }
