@@ -67,7 +67,7 @@ class _RegisterState extends State<Register> {
           data: theme.copyWith(
             colorScheme: theme.colorScheme.copyWith(
               primary:
-                  const Color.fromARGB(255, 0, 0, 0), // Changez la couleur ici
+                   Colors.purple.shade400, // Changez la couleur ici
             ),
           ),
           child: child!,
@@ -101,7 +101,21 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.purple.shade100,
-      body: SafeArea(
+
+      body:Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.blue.shade600,
+                              Colors.blue.shade900,
+              ],
+              begin: Alignment.topLeft, // Point de départ du dégradé
+              end: Alignment.bottomRight, // Point d'arrivée du dégradé
+            ),
+          ), 
+      child:
+      
+      SafeArea(
           child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Form(
@@ -113,14 +127,15 @@ class _RegisterState extends State<Register> {
                     const Text(
                       "Créer un compte",
                       style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 34,
                           fontWeight: FontWeight.w800,
-                          color: Colors.black),
+                          color: Colors.white),
                     ),
                     const SizedBox(
                       height: 20,
                     ),
                     TextFormField(
+                         style: TextStyle(color:Colors.white),
                       controller: _emailController,
                       validator: (value) {
                         if (value != null) {
@@ -136,10 +151,11 @@ class _RegisterState extends State<Register> {
                       },
                       decoration: const InputDecoration(
                         hintText: 'Email',
-                        focusColor: Colors.black,
+                          hintStyle: TextStyle(color: Colors.white),
+                        focusColor: Colors.white,
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Colors.black,
+                            color: Colors.white,
                             width: 2,
                           ),
                         ),
@@ -149,6 +165,7 @@ class _RegisterState extends State<Register> {
                       height: 20,
                     ),
                     TextFormField(
+                         style: TextStyle(color:Colors.white),
                       //Assign controller
                       controller: _passwordController,
                       obscureText: true,
@@ -163,9 +180,10 @@ class _RegisterState extends State<Register> {
                       },
                       decoration: const InputDecoration(
                         hintText: 'Mot de passe',
+                          hintStyle: TextStyle(color: Colors.white),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Colors.black,
+                            color: Colors.white,
                             width: 2,
                           ),
                         ),
@@ -173,6 +191,7 @@ class _RegisterState extends State<Register> {
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
+                         style: TextStyle(color:Colors.white),
                       //Assign controller
                       controller: _prenomController,
                       validator: (value) {
@@ -183,9 +202,10 @@ class _RegisterState extends State<Register> {
                       },
                       decoration: const InputDecoration(
                         hintText: 'Prénom',
+                          hintStyle: TextStyle(color: Colors.white),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Colors.black,
+                            color: Colors.white,
                             width: 2,
                           ),
                         ),
@@ -195,13 +215,15 @@ class _RegisterState extends State<Register> {
                       height: 20,
                     ),
                     TextFormField(
+                         style: TextStyle(color:Colors.white),
                       //Assign controller
                       controller: _instaController,
                       decoration: const InputDecoration(
+                          hintStyle: TextStyle(color: Colors.white),
                         hintText: '@instagram (optionnel)',
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Colors.black,
+                            color: Colors.white,
                             width: 2,
                           ),
                         ),
@@ -212,6 +234,7 @@ class _RegisterState extends State<Register> {
                     ),
 
                     TextFormField(
+                         style: TextStyle(color:Colors.white),
                       controller: _dateController,
                       onTap: () {
                         FocusScope.of(context).requestFocus(
@@ -225,10 +248,11 @@ class _RegisterState extends State<Register> {
                         return null;
                       },
                       decoration: const InputDecoration(
+                          hintStyle: TextStyle(color: Colors.white),
                         hintText: 'Date de naissance',
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Colors.black,
+                            color: Colors.white,
                             width: 2,
                           ),
                         ),
@@ -239,8 +263,15 @@ class _RegisterState extends State<Register> {
                     ),
                     ///////////////////////////////////////////
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
+                       style: ElevatedButton.styleFrom(
+                        primary:
+                            Colors.purple.shade400,
+                        onPrimary: Colors.white,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
                       ),
                       onPressed: () => handleSubmit(),
                       child: _loading
@@ -252,7 +283,8 @@ class _RegisterState extends State<Register> {
                                 strokeWidth: 2,
                               ),
                             )
-                          : const Text('Créer un compte'),
+                          : 
+                          const Text('Créer un compte',style: TextStyle(color: Colors.white),),
                     ),
                     TextButton(
                       onPressed: () {
@@ -264,11 +296,14 @@ class _RegisterState extends State<Register> {
                               style: TextStyle(color: Colors.red),
                               textAlign: TextAlign.center,
                             )
-                          : const Text("Se connecter"),
+                          : const Text("Se connecter",style: TextStyle(color: Colors.white),),
                     ),
                   ],
                 ),
-              ))),
+              )
+          )
+        ),
+      )
     );
   }
 }

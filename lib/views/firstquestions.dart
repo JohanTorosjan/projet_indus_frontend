@@ -23,20 +23,47 @@ class FirstQuestions extends StatefulWidget {
 
 class _FirstQuestionsState extends State<FirstQuestions> {
   final QuestionService questionService = QuestionService();
-  Timer? _timer;
+
   late Future<List<Question>> questions;
   late List<Question> questionList;
   int currentIndex = 0;
   int nextCardIndex = 3;
 
+
+  Timer? _timer;
+  bool _showText = true;
+
+@override
+  void dispose() {
+    _timer!.cancel();
+    super.dispose();
+  }
+
+
   @override
   void initState() {
     super.initState();
+
+  _timer = Timer(Duration(seconds: 3), () {
+      setState(() {
+        _showText = false;
+      });
+    });
+
+
     questions = questionService.getStarters();
+
+
     questions.then((value) {
       questionList = value;
     });
+
+
+    
+   
   }
+
+  
 
   CardView _createCard(Question question, int index) {
     return CardView(
@@ -65,18 +92,21 @@ class _FirstQuestionsState extends State<FirstQuestions> {
                 end: Alignment.bottomRight, // Point d'arrivée du dégradé
               ),
             ),
-            child: SafeArea(
-                child: FutureBuilder<List<Question>>(
+            child: 
+            
+            SafeArea(
+              
+                child: 
+                Column(children: [
+                FutureBuilder<List<Question>>(
               future: questions,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
+                  return LoadingScreen();
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                  return 
                       SwipeableCardsSection(
                         cardController: cardController,
                         context: context,
@@ -118,19 +148,51 @@ class _FirstQuestionsState extends State<FirstQuestions> {
                         },
                         enableSwipeUp: false,
                         enableSwipeDown: false,
-                      ),
-                    ],
-                  );
+                      );
                 }
-              },
-            ))));
-  }
+              }
+            
+            )])
+            )      
+
+             
+              )
+              );
+                }
+      
+
+  
 
   void swipeToMain() {
     Navigator.of(context).push(PageTransition(
-      alignment: Alignment.center,
-        type: PageTransitionType
-            .scale, // Spécifie la direction de la transition
+        alignment: Alignment.center,
+        type:
+            PageTransitionType.scale, // Spécifie la direction de la transition
         child: MainView(client: widget.client)));
+  }
+}
+
+class LoadingScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: Colors.blue,
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.blue.shade600,
+                Colors.blue.shade900,
+              ],
+              begin: Alignment.topLeft, // Point de départ du dégradé
+              end: Alignment.bottomRight, // Point d'arrivée du dégradé
+            ),
+          ),
+          child: Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        ));
   }
 }

@@ -230,7 +230,7 @@ class _MainViewState extends State<MainView>
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 24,
+                                        fontSize: 30,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -272,7 +272,7 @@ class _MainViewState extends State<MainView>
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 24,
+                                        fontSize: 30,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -295,8 +295,8 @@ class _MainViewState extends State<MainView>
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: [
-                              Colors.purple.shade400,
-                              Colors.purple.shade100,
+                              Colors.blue.shade400,
+                              Colors.blue.shade900,
                             ],
                           ),
                         ),
@@ -351,12 +351,12 @@ class _MainViewState extends State<MainView>
                               }
                             },
                             child: const Text(
-                              'Affiner tes envies',
+                              'Affine tes envies',
                               style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                                decoration: TextDecoration.underline,
-                              ),
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                             ),
                           ),
                         ),

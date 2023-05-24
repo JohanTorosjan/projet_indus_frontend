@@ -371,15 +371,7 @@ class ProfileViewState extends State<ProfileView> {
                                           color: Colors.white,
                                         ),
                                         onPressed: () {
-                                          FirebaseAuth.instance.signOut();
-                                          Navigator.push(
-                                            context,
-                                            PageTransition(
-                                              type: PageTransitionType
-                                                  .leftToRightWithFade, // Spécifie la direction de la transition
-                                              child: MyApp(),
-                                            ),
-                                          );
+                                          logout();
                                         }),
                                   ],
                                 ),
@@ -545,9 +537,9 @@ class ProfileViewState extends State<ProfileView> {
                           Navigator.of(context).pop();
                           updateAccount(updatePassword);
                         },
-                        child: Icon(
-                          Icons.check,
-                          color: Colors.white,
+                        child: Text(
+                          "Confimer",
+                          style: TextStyle(color: Colors.white),
                         )),
                   ],
                 )),
@@ -602,5 +594,16 @@ class ProfileViewState extends State<ProfileView> {
   Future<bool> verifyPassword() async {
     return await authService.verifyPassword(
         widget.client.email!, _passwordConfirmation.text);
+  }
+  
+  void logout() async  {
+     await FirebaseAuth.instance.signOut();
+      Navigator.push(
+                  context,
+              PageTransition(
+          type: PageTransitionType.leftToRightWithFade, // Spécifie la direction de la transition
+          child: MyApp(),
+          ) ,
+  );
   }
 }

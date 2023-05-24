@@ -49,7 +49,12 @@ class _BunchOfQuestionsState extends State<BunchOfQuestions> {
     setState(() {
       questionsList = widget.questions;
     });
-    // TODO: implement initState
+    print(questionsList);
+    print(questionsList);
+    print(questionsList);
+    print(questionsList);
+    print(questionsList);
+    print(questionsList);
   }
 
   @override
@@ -91,16 +96,16 @@ class _BunchOfQuestionsState extends State<BunchOfQuestions> {
                 end: Alignment.bottomCenter,
               ),
             ),
-            child: Center(
+            child: SafeArea(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Spacer(),
+                 
                   SwipeableCardsSection(
                     cardController: cardController,
                     context: context,
-                    items: widget.questions
-                        .getRange(0, min(3, widget.questions.length))
+                    items: questionsList
+                        .getRange(0, min(3, questionsList.length))
                         .toList() // Convert Iterable to List
                         .asMap() // Convert to a map to get index and value
                         .map((index, question) =>
@@ -109,11 +114,6 @@ class _BunchOfQuestionsState extends State<BunchOfQuestions> {
                         .toList(),
                     onCardSwiped: (dir, index, widget) {
                       int questionId = (widget as CardView).id;
-                      Question question = Question(
-                          choice0: widget.choice0,
-                          choice1: widget.choice1,
-                          label: widget.text,
-                          id: widget.id);
                       if (dir == Direction.left) {
                         RatingDTO ratingDTO =
                             RatingDTO(id: questionId, choice: false);
@@ -173,7 +173,7 @@ class _BunchOfQuestionsState extends State<BunchOfQuestions> {
                     enableSwipeUp: false,
                     enableSwipeDown: false,
                   ),
-                  Spacer()
+                 
                 ],
               ),
             )));
@@ -231,7 +231,6 @@ class _BunchOfQuestionsState extends State<BunchOfQuestions> {
   }
 
   void close() {
-   
     Navigator.push(
       context,
       PageTransition(

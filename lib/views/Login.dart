@@ -42,7 +42,19 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.purple.shade100,
-      body: SafeArea(
+      body:Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                 Colors.blue.shade600,
+                              Colors.blue.shade900,
+              ],
+              begin: Alignment.topLeft, // Point de départ du dégradé
+              end: Alignment.bottomRight, // Point d'arrivée du dégradé
+            ),
+          ), 
+      child:
+      SafeArea(
           child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Form(
@@ -52,14 +64,15 @@ class _LoginState extends State<Login> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Text(
-                      "Se connecter",
+                      "Connexion",
                       style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.w800,color:  Colors.black),
+                          TextStyle(fontSize: 34, fontWeight: FontWeight.w800,color:  Colors.white),
                     ),
                     const SizedBox(
                       height: 20,
                     ),
                     TextFormField(
+                      style: TextStyle(color: Colors.white),
                      
                       controller: _emailController,
                       validator: (value) {
@@ -75,10 +88,11 @@ class _LoginState extends State<Login> {
                       },
                       decoration: const InputDecoration(
                         hintText: 'Email',
-                        focusColor:  Colors.black,
+                        hintStyle: TextStyle(color: Colors.white),
+                        focusColor:  Colors.white,
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color:  Colors.black,
+                            color:  Colors.white,
                             width: 2,
                           ),
                         ),
@@ -88,6 +102,7 @@ class _LoginState extends State<Login> {
                       height: 20,
                     ),
                     TextFormField(
+                      style: TextStyle(color:Colors.white),
                       //Assign controller
                       controller: _passwordController,
                       obscureText: true,
@@ -101,20 +116,29 @@ class _LoginState extends State<Login> {
                         return null;
                       },
                       decoration: const InputDecoration(
+                        
                         hintText: 'Mot de passe',
+                        hintStyle: TextStyle(color: Colors.white),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color:  Colors.black,
+                            color:  Colors.white,
                             width: 2,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 40),
                    
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:  Colors.black,
+                        style: ElevatedButton.styleFrom(
+                        primary:
+                            Colors.purple.shade400,
+                        onPrimary: Colors.white,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
                       ),
                       onPressed: () => handleSubmit(),
                       child: _loading
@@ -126,7 +150,7 @@ class _LoginState extends State<Login> {
                                 strokeWidth: 2,
                               ),
                             )
-                          : const Text('Se connecter'),
+                          : const Text('Se connecter',style: TextStyle(color: Colors.white),),
                     ),
                     TextButton(
                       onPressed: () {
@@ -137,7 +161,7 @@ class _LoginState extends State<Login> {
                     style: TextStyle(color: Colors.red),
                     textAlign:TextAlign.center,
                     ):
-                    const Text("Pas encore de compte ?"),
+                    const Text("Pas encore de compte ?",style: TextStyle(color: Colors.white),),
                     )
                   , 
                   ],
@@ -145,6 +169,7 @@ class _LoginState extends State<Login> {
               )
             )
           ),
+      )
     );
   }
 }
