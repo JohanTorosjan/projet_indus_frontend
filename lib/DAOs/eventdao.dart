@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:projet_indus/models/participants.dart';
 
 class EventDAO {
-  static String API_URL = DotEnv().env['API_URL']!;
+  static String API_URL = "https://sortir-ce-soir-back.cluster-ig4.igpolytech.fr";
 
   Future<Event?> searchEvent(EventRequestDTO eventRequestDTO) async {
     print(eventRequestDTO);

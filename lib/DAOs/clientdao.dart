@@ -6,7 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 
 class ClientDAO {
-  static String API_URL = DotEnv().env['API_URL']!;
+  static String API_URL = "https://sortir-ce-soir-back.cluster-ig4.igpolytech.fr";
 
   Future<Client> getByFirebaseId({required String firebaseId}) async {
     final String apiUrl = '$API_URL/user/firebase_id/$firebaseId';

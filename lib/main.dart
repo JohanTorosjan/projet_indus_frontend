@@ -28,8 +28,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  DotEnv dotenv = DotEnv();
-  await dotenv.load();
+  // await dotenv.load(fileName: ".env");
+  // print("loaded");
   runApp(const MyApp());
 }
 
