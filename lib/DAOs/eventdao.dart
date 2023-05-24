@@ -1,18 +1,21 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:projet_indus/DTOs/eventrequestdto.dart';
 import 'package:projet_indus/models/event.dart';
 import 'package:http/http.dart' as http;
 import 'package:projet_indus/models/participants.dart';
 
 class EventDAO {
+  static String API_URL = DotEnv().env['API_URL']!;
+
   Future<Event?> searchEvent(EventRequestDTO eventRequestDTO) async {
     print(eventRequestDTO);
     final headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     };
 
-    const String apiUrl = 'https://localhost:8443/events';
+    final String apiUrl = '$API_URL/events';
     print(apiUrl);
 
     try {
@@ -44,7 +47,7 @@ class EventDAO {
   }
 
   Future<Event?> getEvent(int id) async {
-    String apiUrl = "https://localhost:8443/events/$id";
+    String apiUrl = "$API_URL/events/$id";
     print(apiUrl);
     try {
       final response = await http.get(Uri.parse(apiUrl));

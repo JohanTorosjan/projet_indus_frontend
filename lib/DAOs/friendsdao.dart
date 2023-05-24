@@ -1,11 +1,15 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import '../models/friends.dart';
 import 'package:http/http.dart' as http;
 
 class FriendsDAO {
+  static String API_URL = DotEnv().env['API_URL']!;
+
   Future<List<Friends>?> getFriends(int id) async {
-    final String apiUrl = 'https://localhost:8443/user/friends/$id';
+    final String apiUrl = '$API_URL/user/friends/$id';
     print(apiUrl);
     try {
       final response = await http.get(Uri.parse(apiUrl));
