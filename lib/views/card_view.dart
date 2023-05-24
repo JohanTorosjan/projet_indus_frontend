@@ -26,7 +26,15 @@ class CardView extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.6,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.blue,width: 5.0),
+          boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.5),
+                                        spreadRadius: 9,
+                                        blurRadius: 9,
+                                        offset: Offset(0, 3),
+                                      ),
+                                    ],
+          border: Border.all(color: Colors.purple,width: 2.0),
           borderRadius: BorderRadius.circular(10),
           gradient: LinearGradient(
             
@@ -58,7 +66,7 @@ class CardView extends StatelessWidget {
               Transform(
                 transform: Matrix4.identity()
               ..setEntry(3, 2, 0.001)
-              ..rotateY(0.4)
+              ..rotateY(0)
               ..rotateX(0),
               child: Text(
                 text,
@@ -73,9 +81,9 @@ class CardView extends StatelessWidget {
 
             const SizedBox(height: 30,),
              Container(
-    
-                          height: 5,
-                          color: Colors.blue.shade400,
+                        
+                          height: 6,
+                          color: Colors.deepPurple,
                         ),
             Expanded(
               child: Stack(
@@ -83,36 +91,37 @@ class CardView extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 32.0, bottom: 32.0),
+                      padding: const EdgeInsets.only(left: 35.0, bottom: 100.0),
                       child: Transform(
                 transform: Matrix4.identity()
               ..setEntry(3, 2, 0.001)
               ..rotateY(0)
-              ..rotateZ(0.75)
-              ,child:
-                      
+              ..rotateZ(0.6)
+              ,child:      
                       Text(
                         choice0,
+                        textAlign: TextAlign.left,
                         style:
-                            const TextStyle(fontSize: 20, color: Colors.white),
+                            const TextStyle(fontSize: 30, color: Colors.white),
                       )),
                     ),
-                  ),
+            ),
                   Align(
                     alignment: Alignment.topRight,
                     child: Padding(
-                      padding: const EdgeInsets.only(right: 32.0, top: 32.0),
+                      padding: const EdgeInsets.only(left:200, top: 20.0),
                       child: 
                       Transform(
                 transform: Matrix4.identity()
               ..setEntry(3, 2, 0.001)
               ..rotateY(0)
-              ..rotateZ(0.75)
+              ..rotateZ(0.6)
               ,child:
                       Text(
+                        textAlign:TextAlign.left,
                         choice1,
                         style:
-                            const TextStyle(fontSize: 20, color: Colors.white),
+                            const TextStyle(fontSize: 30, color: Colors.white),
                       ),)
                     ),
                   ),
@@ -137,7 +146,7 @@ class DiagonalDividerPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.blue
+      ..color = Colors.deepPurple
       ..strokeWidth = 5.0;
 
     canvas.drawLine(

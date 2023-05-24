@@ -106,14 +106,15 @@ class ProfileViewState extends State<ProfileView> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.push(
-              context,
-              PageTransition(
-                type: PageTransitionType
-                    .leftToRight, // Spécifie la direction de la transition
-                child: MainView(client: widget.client),
-              ),
-            );
+            Navigator.of(context).pop();
+            // Navigator.push(
+            //   context,
+            //   PageTransition(
+            //     type: PageTransitionType
+            //         .fade, // Spécifie la direction de la transition
+            //     child: MainView(client: widget.client),
+            //   ),
+            // );
           },
         ),
       ),
@@ -595,15 +596,16 @@ class ProfileViewState extends State<ProfileView> {
     return await authService.verifyPassword(
         widget.client.email!, _passwordConfirmation.text);
   }
-  
-  void logout() async  {
-     await FirebaseAuth.instance.signOut();
-      Navigator.push(
-                  context,
-              PageTransition(
-          type: PageTransitionType.leftToRightWithFade, // Spécifie la direction de la transition
-          child: MyApp(),
-          ) ,
-  );
+
+  void logout() async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.push(
+      context,
+      PageTransition(
+        type: PageTransitionType
+            .leftToRightWithFade, // Spécifie la direction de la transition
+        child: MyApp(),
+      ),
+    );
   }
 }

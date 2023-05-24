@@ -29,41 +29,31 @@ class _FirstQuestionsState extends State<FirstQuestions> {
   int currentIndex = 0;
   int nextCardIndex = 3;
 
-
   Timer? _timer;
   bool _showText = true;
 
-@override
+  @override
   void dispose() {
     _timer!.cancel();
     super.dispose();
   }
 
-
   @override
   void initState() {
     super.initState();
 
-  _timer = Timer(Duration(seconds: 3), () {
+    _timer = Timer(Duration(seconds: 3), () {
       setState(() {
         _showText = false;
       });
     });
 
-
     questions = questionService.getStarters();
-
 
     questions.then((value) {
       questionList = value;
     });
-
-
-    
-   
   }
-
-  
 
   CardView _createCard(Question question, int index) {
     return CardView(
@@ -81,6 +71,20 @@ class _FirstQuestionsState extends State<FirstQuestions> {
         SwipeableCardSectionController();
     int? idUtilisateur = widget.client.id;
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          toolbarHeight: 100,
+          title: Text(
+            textAlign: TextAlign.center,
+            "Réponds à quelques\n questions avant\n de commencer!",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 25.0,
+                color: Colors.white),
+          ),
+        ),
+        extendBodyBehindAppBar: true,
         body: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -92,22 +96,19 @@ class _FirstQuestionsState extends State<FirstQuestions> {
                 end: Alignment.bottomRight, // Point d'arrivée du dégradé
               ),
             ),
-            child: 
-            
-            SafeArea(
-              
-                child: 
-                Column(children: [
-                FutureBuilder<List<Question>>(
-              future: questions,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return LoadingScreen();
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  return 
-                      SwipeableCardsSection(
+            child: SafeArea(
+                child: Column(children: [
+              FutureBuilder<List<Question>>(
+                  future: questions,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return SwipeableCardsSection(
                         cardController: cardController,
                         context: context,
                         items: questionList
@@ -149,26 +150,18 @@ class _FirstQuestionsState extends State<FirstQuestions> {
                         enableSwipeUp: false,
                         enableSwipeDown: false,
                       );
-                }
-              }
-            
-            )])
-            )      
-
-             
-              )
-              );
-                }
-      
-
-  
+                    }
+                  })
+            ]))));
+  }
 
   void swipeToMain() {
-    Navigator.of(context).push(PageTransition(
-        alignment: Alignment.center,
-        type:
-            PageTransitionType.scale, // Spécifie la direction de la transition
-        child: MainView(client: widget.client)));
+    Navigator.of(context).pop();
+    // Navigator.of(context).push(PageTransition(
+    //     alignment: Alignment.center,
+    //     type:
+    //         PageTransitionType.scale, // Spécifie la direction de la transition
+    //     child: MainView(client: widget.client)));
   }
 }
 

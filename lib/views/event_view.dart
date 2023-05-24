@@ -67,24 +67,40 @@ class _EventViewState extends State<EventView> {
             leading: IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
-                if (widget.client.has_active_session == false) {
+                if (widget.close != null) {
                   widget.client.has_active_session = true;
-                  Navigator.push(
-                      context,
+                  Navigator.pushAndRemoveUntil(
+                    context,
                       PageTransition(
                         type: PageTransitionType
                             .fade, // Spécifie la direction de la transition
                         child: MainView(client: widget.client),
-                      ));
+                      ),
+                  (route) => false,
+                  );
+                  widget.close();
                 } else {
-                   Navigator.push(
-                      context,
-                      PageTransition(
-                        type: PageTransitionType
-                            .fade, // Spécifie la direction de la transition
-                        child: MainView(client: widget.client),
-                      ));
+                  Navigator.of(context).pop();
                 }
+
+                // if (widget.client.has_active_session == false) {
+                //   widget.client.has_active_session = true;
+                //   Navigator.push(
+                //       context,
+                //       PageTransition(
+                //         type: PageTransitionType
+                //             .fade, // Spécifie la direction de la transition
+                //         child: MainView(client: widget.client),
+                //       ));
+                // } else {
+                //    Navigator.push(
+                //       context,
+                //       PageTransition(
+                //         type: PageTransitionType
+                //             .fade, // Spécifie la direction de la transition
+                //         child: MainView(client: widget.client),
+                //       ));
+                // }
               },
             )),
         extendBodyBehindAppBar: true,
@@ -169,7 +185,9 @@ class _EventViewState extends State<EventView> {
                               child: Text(
                                 '${widget.event!.infrastructure.adresse}',
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  decoration: TextDecoration.underline,
+                                  decorationStyle: TextDecorationStyle.wavy,
+                                  color: Colors.blue,
                                   fontSize: 20,
                                 ),
                               ),

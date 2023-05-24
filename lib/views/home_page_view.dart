@@ -122,51 +122,51 @@ class _MainViewState extends State<MainView>
             ? AppBar(
                 backgroundColor: Colors.transparent,
                 elevation: 0,
-                leading: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              Colors.blue.shade600,
-                              Colors.blue.shade900,
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      iconSize: 32, // Increase the size of the button
-                      icon: const Icon(Icons.group),
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
+                // leading: Stack(
+                //   children: [
+                //     Positioned.fill(
+                //       child: Container(
+                //         // decoration: BoxDecoration(
+                //         //   shape: BoxShape.circle,
+                //         //   gradient: LinearGradient(
+                //         //     begin: Alignment.topLeft,
+                //         //     end: Alignment.bottomRight,
+                //         //     colors: [
+                //         //       Colors.blue.shade600,
+                //         //       Colors.blue.shade900,
+                //         //     ],
+                //         //   ),
+                //         // ),
+                //       ),
+                //     ),
+                //     IconButton(
+                //       iconSize: 32, // Increase the size of the button
+                //       icon: const Icon(Icons.group),
+                //       onPressed: () {},
+                //     ),
+                //   ],
+                // ),
                 actions: [
                   Stack(
                     children: [
                       Positioned.fill(
                         child: Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Colors.blue.shade600,
-                                Colors.blue.shade900,
-                              ],
-                            ),
-                          ),
+                          // decoration: BoxDecoration(
+                          //   shape: BoxShape.circle,
+                          //   gradient: LinearGradient(
+                          //     begin: Alignment.topLeft,
+                          //     end: Alignment.bottomRight,
+                          //     colors: [
+                          //       Colors.blue.shade600,
+                          //       Colors.blue.shade900,
+                          //     ],
+                          //   ),
+                          // ),
                         ),
                       ),
                       IconButton(
-                          iconSize: 32, // Increase the size of the button
-                          icon: const Icon(Icons.account_circle),
+                          iconSize: 40, // Increase the size of the button
+                          icon: const Icon(Icons.account_circle,color: Colors.blue),
                           onPressed: () {
                             Navigator.push(
                                 context,
@@ -209,10 +209,19 @@ class _MainViewState extends State<MainView>
                                     afficherNouvelleVue = true;
                                   });
                                 },
-                                child: Container(
-                                  width: 250,
-                                  height: 250,
+                                child: 
+                                 Padding(padding: EdgeInsetsDirectional.all(50),child:Container(
+                                  width: 300,
+                                  height: 300,
                                   decoration: BoxDecoration(
+                                     boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.5),
+                                        spreadRadius: 17,
+                                        blurRadius: 17,
+                                        offset: Offset(0, 3),
+                                      ),
+                                    ],
                                     shape: BoxShape.circle,
                                     gradient: LinearGradient(
                                       begin: Alignment.topLeft,
@@ -221,6 +230,7 @@ class _MainViewState extends State<MainView>
                                         Colors.blue.shade600,
                                         Colors.blue.shade900,
                                       ],
+                                      
                                     ),
                                     color: Colors.blue,
                                   ),
@@ -235,7 +245,7 @@ class _MainViewState extends State<MainView>
                                       ),
                                     ),
                                   ),
-                                ),
+                                )),
                               ))
                     : AnimatedSizeAndFade(
                         vsync: this,
@@ -251,13 +261,23 @@ class _MainViewState extends State<MainView>
                                     afficherNouvelleVue = true;
                                   });
                                 },
-                                child: Container(
-                                  width: 250,
-                                  height: 250,
+                                child: 
+                                Padding(padding: EdgeInsetsDirectional.all(50),child:
+                                Container(
+                                  width: 300,
+                                  height: 300,
                                   decoration: BoxDecoration(
+                                     boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(0.5),
+                                            spreadRadius: 17,
+                                            blurRadius: 17,
+                                            offset: Offset(0, 3),
+                                          ),
+                                        ],
                                     shape: BoxShape.circle,
                                     gradient: LinearGradient(
-                                      begin: Alignment.topLeft,
+                                      begin: Alignment.topLeft ,
                                       end: Alignment.bottomRight,
                                       colors: [
                                         Colors.blue.shade600,
@@ -277,7 +297,7 @@ class _MainViewState extends State<MainView>
                                       ),
                                     ),
                                   ),
-                                ),
+                                )),
                               )),
               ),
               !afficherNouvelleVue

@@ -65,19 +65,20 @@ class _BunchOfQuestionsState extends State<BunchOfQuestions> {
     int questionsLength = widget.questions.length;
 
     return Scaffold(
-        appBar: AppBar(
+
+
+      appBar: AppBar(
           backgroundColor: Colors.transparent,
-          elevation: 0,
-          // title: Text(
-          //   'Avec des ami.es ? ',
-          //   style: TextStyle(
-          //     fontWeight: FontWeight.bold,
-          //     fontSize: 30,
-          //     color: Color.fromARGB(255, 255, 255, 255),
-          //     fontFamily: 'Inter',
-          //   ),
-          // ),
-          leading: IconButton(
+         elevation: 0,
+          title: Text(
+            textAlign: TextAlign.center,
+            "Affine tes envies",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 30.0,
+                color: Colors.white),
+          ),
+           leading: IconButton(
             icon: Icon(Icons.keyboard_arrow_down),
             onPressed: () {
               Navigator.of(context).pop();
@@ -85,6 +86,7 @@ class _BunchOfQuestionsState extends State<BunchOfQuestions> {
           ),
         ),
         extendBodyBehindAppBar: true,
+     
         body: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -231,13 +233,18 @@ class _BunchOfQuestionsState extends State<BunchOfQuestions> {
   }
 
   void close() {
-    Navigator.push(
-      context,
-      PageTransition(
-        type: PageTransitionType
-            .leftToRight, // Spécifie la direction de la transition
-        child: MainView(client: widget.client),
-      ),
-    );
+
+
+      Navigator.pushAndRemoveUntil(
+                    context,
+                      PageTransition(
+                        type: PageTransitionType
+                            .fade, // Spécifie la direction de la transition
+                        child: MainView(client: widget.client),
+                      ),
+                  (route) => false,
+                  );
+   
+    
   }
 }
