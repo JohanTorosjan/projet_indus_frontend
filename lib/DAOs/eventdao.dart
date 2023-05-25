@@ -15,7 +15,7 @@ class EventDAO {
       'Content-Type': 'application/json; charset=UTF-8',
     };
 
-    final String apiUrl = 'https://localhost:8443/events';
+    final String apiUrl = '$API_URL/events';
     print(apiUrl);
 
     try {
@@ -47,7 +47,7 @@ class EventDAO {
   }
 
   Future<Event?> getEvent(int id) async {
-    String apiUrl = "https://localhost:8443/events/$id";
+    String apiUrl = "$API_URL/events/$id";
     print(apiUrl);
     try {
       final response = await http.get(Uri.parse(apiUrl));
