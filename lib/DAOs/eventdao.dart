@@ -15,7 +15,7 @@ class EventDAO {
       'Content-Type': 'application/json; charset=UTF-8',
     };
 
-    final String apiUrl = '$API_URL/events';
+    final String apiUrl = 'https://localhost:8443/events';
     print(apiUrl);
 
     try {
@@ -35,7 +35,7 @@ class EventDAO {
         List<Participants> participants = [];
         if (event.is_a_new_event == false) {
           for (var participant in jsonData["participants"]) {
-            participant.add(Participants.fromJson(participant));
+            participants.add(Participants.fromJson(participant));
           }
         }
         event.participants = participants;
@@ -47,7 +47,7 @@ class EventDAO {
   }
 
   Future<Event?> getEvent(int id) async {
-    String apiUrl = "$API_URL/events/$id";
+    String apiUrl = "https://localhost:8443/events/$id";
     print(apiUrl);
     try {
       final response = await http.get(Uri.parse(apiUrl));
